@@ -102,20 +102,20 @@ exports.show_one_character = async (req, res) => {
                 authorIDs = []
                 for (const comicItem of result["comics"]) {
                     characterIDs = characterIDs.concat(comicItem.characters);
-                    authorIDs = characterIDs.concat(comicItem.authors);
+                    authorIDs = authorIDs.concat(comicItem.authors);
                 }
                 characterIDs = [...new Set(characterIDs)];
                 authorIDs = [...new Set(authorIDs)];
 
                 // get all the connected characters
                 characterItems = await characterIDs.map(async id => {
-                    return await get_one_character_info(id).then(data => { return { "name": data.character_name, "url": data.url } });
+                    return await get_one_character_info(id).then(data => { return { "name": data.character_name, "url": data.url, "id": id } });
                 })
                 result["connected_characters"] = await Promise.all(characterItems);
 
                 // get all the authors
                 authorItems = await authorIDs.map(async id => {
-                    return await get_one_author_info(id).then(data => { return { "name": data.author_name, "url": data.url } });
+                    return await get_one_author_info(id).then(data => { return { "name": data.author_name, "url": data.url, "id": id } });
                 })
                 result["authors"] = await Promise.all(authorItems);
 
