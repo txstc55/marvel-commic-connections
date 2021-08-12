@@ -88,12 +88,12 @@ exports.show_one_character = async (req, res) => {
             }
             else {
                 result = {}
-                result["character"] = { "name": data.character_name, "url": data.url };
+                result["character"] = { "name": data.character_name, "url": data.url, "id": parseInt(characterID)};
 
                 // get all the comic items
                 comicIDs = data.comic_ids;
                 comicItems = await comicIDs.map(async id => {
-                    return await get_one_comic_info(id).then(data => { return { "name": data.comic_name, "url": data.url, "characters": data.character_ids, "authors": data.author_ids }; });
+                    return await get_one_comic_info(id).then(data => { return { "name": data.comic_name, "url": data.url, "characters": data.character_ids, "authors": data.author_ids, "id": parseInt(data.id), "cover": data.cover }; });
                 });
                 result["comics"] = await Promise.all(comicItems);
 

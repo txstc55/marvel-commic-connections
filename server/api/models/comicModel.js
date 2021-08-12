@@ -16,7 +16,10 @@ const comicSchema = new Schema(
             default: 'comics/'
         },
         author_ids: [],
-        character_ids: []
+        character_ids: [],
+        cover: {
+            type: String,
+        }
     },
     { collection: 'comics' }
 );
