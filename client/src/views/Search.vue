@@ -6,7 +6,7 @@
         <CharacterList />
       </div>
       <div class="pane">
-        <CharacterList />
+        <SVGGraph />
       </div>
       <div class="pane" id="right">
         <ComicList />
@@ -20,12 +20,14 @@
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterList from "@/components/CharacterList.vue";
 import ComicList from "@/components/ComicList.vue";
+import SVGGraph from "@/components/SVGGraph.vue"
 export default {
   name: "Search",
   components: {
     SearchBar,
     CharacterList,
     ComicList,
+    SVGGraph,
   },
   data() {
     return {};
@@ -57,7 +59,7 @@ body {
 }
 .pane {
   height: 83vh;
-  max-height: 100%;
+  max-height: 83vh;
   overflow: scroll;
   /* border: solid 2px; */
   flex: 1 1 auto;

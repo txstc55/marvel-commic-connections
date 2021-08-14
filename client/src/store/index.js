@@ -74,7 +74,7 @@ export default new Vuex.Store({
           }
           var comicInfos = {};
           for (const item of comics) {
-            comicInfos[item.id] = { "name": item.name, "url": item.url, "authors": item.authors, "cover": item.cover, "ready": true };
+            comicInfos[item.id] = { "name": item.name, "url": item.url, "authors": item.authors, "cover": item.cover };
             for (const cid of item.characters) {
               ccInfos[cid]["comics"].push(item.id);
             }

@@ -85,35 +85,6 @@ export default {
         store.dispatch("updateMouseSelectedCharacterID", -1);
       }
     },
-    stringToColor(str) {
-      var hash = 0;
-      for (var i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      var color = "#";
-      for (i = 0; i < 3; i++) {
-        var value = (hash >> (i * 8)) & 0xff;
-        color += ("00" + value.toString(16)).substr(-2);
-      }
-      this.colorHex = color;
-      return color;
-    },
-    colorTooDark(str) {
-      const hex = this.stringToColor(str);
-      var c = hex.substring(1); // strip #
-      var rgb = parseInt(c, 16); // convert rrggbb to decimal
-      var r = (rgb >> 16) & 0xff; // extract red
-      var g = (rgb >> 8) & 0xff; // extract green
-      var b = (rgb >> 0) & 0xff; // extract blue
-
-      var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-
-      if (luma < 128) {
-        return true;
-      } else {
-        return false;
-      }
-    },
     // sort characters based on number of appearances
     sort_characters(obj) {
       var items = Object.keys(obj).map(function (key) {
