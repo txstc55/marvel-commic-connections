@@ -17,10 +17,12 @@
 
 <script>
 // @ is an alias to /src
+import store from "../store"
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterList from "@/components/CharacterList.vue";
 import ComicList from "@/components/ComicList.vue";
 import SVGGraph from "@/components/SVGGraph.vue"
+
 export default {
   name: "Search",
   components: {
@@ -32,7 +34,9 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    store.dispatch("getCharacterNameAndID");
+  },
 };
 </script>
 

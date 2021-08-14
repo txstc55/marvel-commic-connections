@@ -46,6 +46,18 @@ export default {
       store.dispatch("updateMouseSelectedCharacterID", -1);
       store.dispatch("updateHoverCharacterID", -1);
     },
+    initialLoad(val) {
+      if (val) {
+        this.allCharacterNames = store.getters.allCharacterNames;
+        console.log("Loaded " + this.allCharacterNames.length + " characters");
+        this.selectedCharacter =
+          this.allCharacterNames[
+            Math.floor(Math.random() * this.allCharacterNames.length)
+          ];
+        this.search = this.selectedCharacter;
+        this.querySelection(this.search);
+      }
+    },
   },
   methods: {
     querySelection(v) {
@@ -60,16 +72,12 @@ export default {
       }, 200);
     },
   },
-  mounted() {
-    this.allCharacterNames = store.getters.allCharacterNames;
-    console.log("Loaded " + this.allCharacterNames.length + " characters");
-    this.selectedCharacter =
-      this.allCharacterNames[
-        Math.floor(Math.random() * this.allCharacterNames.length)
-      ];
-    this.search = this.selectedCharacter;
-    this.querySelection(this.search);
+  computed: {
+    initialLoad() {
+      return store.getters.initialLoad;
+    },
   },
   created() {},
+  mounted() {},
 };
 </script>

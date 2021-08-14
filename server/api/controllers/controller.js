@@ -4,7 +4,7 @@ const comics = mongoose.model('comics');
 const authors = mongoose.model('authors');
 
 exports.list_all_characters = async (_, res) => {
-    return await characters.find({}, (err, allCharacters) => {
+    return await characters.find({}, {_id: 1, character_name: 1}, (err, allCharacters) => {
         if (err) res.send(err);
         res.json(allCharacters);
     });

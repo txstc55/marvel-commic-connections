@@ -40,11 +40,9 @@ export default {
               Math.floor(lineLength / Object.keys(this.characters).length)
             )
           : 0;
-      if (Object.keys(this.characters).length <= 16) {
-        radius /= (5 - Math.log2(Object.keys(this.characters).length)) * 2;
-      } else {
-        radius *= Math.log2(Object.keys(this.characters).length) - 4;
-      }
+
+      radius *= Math.max(0.5, Math.log2(Object.keys(this.characters).length) - 3);
+
       const degree =
         Object.keys(this.characters).length > 0
           ? (2 * Math.PI) / (Object.keys(this.characters).length - 1)
