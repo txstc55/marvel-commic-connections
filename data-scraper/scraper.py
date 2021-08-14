@@ -135,40 +135,40 @@ def getInfoToJson():
         json.dump(authorInfos, outfile)
 
 
-getInfoToJson()
+# getInfoToJson()
 
 
-# characterInfos = {}
-# comicInfos = {}
-# authorInfos = {}
+characterInfos = {}
+comicInfos = {}
+authorInfos = {}
 
 
-# with open("characters.json", 'r') as outfile:
-#     characterInfos = json.load(outfile)
+with open("characters.json", 'r') as outfile:
+    characterInfos = json.load(outfile)
 
 
-# with open("comics.json", 'r') as outfile:
-#     comicInfos = json.load(outfile)
+with open("comics.json", 'r') as outfile:
+    comicInfos = json.load(outfile)
 
-# with open("authors.json", 'r') as outfile:
-#     authorInfos = json.load(outfile)
+with open("authors.json", 'r') as outfile:
+    authorInfos = json.load(outfile)
 
 
-# import pymongo
-# myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-# mydb = myclient["marvel"]
+import pymongo
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["marvel"]
 
-# characterCollections = mydb["characters"]
-# for character in characterInfos:
-#     characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "url":characterInfos[character]["url"], "comic_ids":list(set(characterInfos[character]["comicIDs"]))}
-#     characterCollections.insert_one(characterItem)
+characterCollections = mydb["characters"]
+for character in characterInfos:
+    characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "url":characterInfos[character]["url"], "comic_ids":list(set(characterInfos[character]["comicIDs"]))}
+    characterCollections.insert_one(characterItem)
 
-# comicCollections = mydb["comics"]
-# for comic in comicInfos:
-#     comicItem = {"_id": comicInfos[comic]["id"],"cover":comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(comicInfos[comic]["authorIDs"])), "url": comicInfos[comic]["url"], "character_ids":list(set(comicInfos[comic]["characterIDs"]))}
-#     comicCollections.insert_one(comicItem)
+comicCollections = mydb["comics"]
+for comic in comicInfos:
+    comicItem = {"_id": comicInfos[comic]["id"],"cover":comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(comicInfos[comic]["authorIDs"])), "url": comicInfos[comic]["url"], "character_ids":list(set(comicInfos[comic]["characterIDs"]))}
+    comicCollections.insert_one(comicItem)
 
-# authorCollections = mydb["authors"]
-# for author in authorInfos:
-#     authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]["name"], "url": author}
-#     authorCollections.insert_one(authorItem)
+authorCollections = mydb["authors"]
+for author in authorInfos:
+    authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]["name"], "url": author}
+    authorCollections.insert_one(authorItem)
