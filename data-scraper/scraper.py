@@ -112,7 +112,7 @@ def getInfoToJson():
                     authorInfos[link] = {"name": name, "id": authorInd}
                     print("Created author: ", name, link, authorInd)
                     authorInd += 1
-                authorids.append(authorInfos[link])
+                authorids.append(authorInfos[link]["id"])
             comicInfos[comic]["authorIDs"] = authorids
 
     except:
