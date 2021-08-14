@@ -106,7 +106,7 @@ def getInfoToJson():
             item = tmp_author_array[comic]
             authorids = []
             for authors in item:
-                link = authors[0].replace("https://www.marvel.com/comics/", "")
+                link = authors[0].replace("/comics/", "")
                 name = authors[1]
                 if not link in authorInfos:
                     authorInfos[link] = {"name": name, "id": authorInd}
