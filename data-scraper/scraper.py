@@ -63,7 +63,7 @@ def getInfoToJson():
                     characterInfos[character]["id"])
 
             characterInfos[character]["comicIDs"] = comicBookIDs
-            time.sleep(random.random() * 2)
+            # time.sleep(random.random() * 2)
 
         from multiprocessing.pool import ThreadPool as Pool
         tmp_author_array = {}
