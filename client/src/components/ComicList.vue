@@ -18,7 +18,11 @@
           class="text-h6"
           v-text="
             currentCharacter.id == selectedCharacterID
-              ? 'Co-appeared with ' + this.connectCount + ' characters in ' + currentCharacter.comics.length + ' comics'
+              ? 'Co-appeared with ' +
+                this.connectCount +
+                ' characters in ' +
+                currentCharacter.comics.length +
+                ' comics'
               : 'Co-appeared with ' +
                 selectedCharacterName +
                 ' in ' +
@@ -122,8 +126,6 @@ export default {
         this.maximumLoad += 20;
       }
     },
-
-
   },
   computed: {
     stage() {
@@ -161,7 +163,8 @@ export default {
           this.loadingCharacterInfo = true;
           this.currentCharacter =
             store.getters.connectedCharacterInfos[this.selectedCharacterID];
-          this.connectCount = Object.keys(store.getters.connectedCharacterInfos).length;
+          this.connectCount =
+            Object.keys(store.getters.connectedCharacterInfos).length - 1;
           this.loadingCharacterInfo = false;
         }
       }

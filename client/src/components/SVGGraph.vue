@@ -41,7 +41,10 @@ export default {
             )
           : 0;
 
-      radius *= Math.max(0.5, Math.log2(Object.keys(this.characters).length) - 3);
+      radius *= Math.max(
+        0.5,
+        Math.log2(Object.keys(this.characters).length) - 3
+      );
 
       const degree =
         Object.keys(this.characters).length > 0
@@ -51,7 +54,7 @@ export default {
       for (const [key, value] of Object.entries(this.characters)) {
         var circle = document.createElementNS(this.svgns, "circle");
         var text = document.createElementNS(this.svgns, "text");
-        var line = document.createElementNS(this.svgns, "line");
+        // var line = document.createElementNS(this.svgns, "line");
         if (key == this.selectedCharacterID) {
           circle.setAttributeNS(null, "cx", center.x);
           circle.setAttributeNS(null, "cy", center.y);
@@ -62,10 +65,10 @@ export default {
             "y",
             center.y + 0.5 * Math.ceil(radius * 1.5)
           );
-          line.setAttributeNS(null, "x2", center.x);
-          line.setAttributeNS(null, "y2", center.y);
+          // line.setAttributeNS(null, "x2", center.x);
+          // line.setAttributeNS(null, "y2", center.y);
         } else {
-          const randomScalar = Math.random() * 0.9 + 0.3;
+          const randomScalar = Math.random() * 0.8 + 0.4;
           const x =
             center.x + randomScalar * lineLength * Math.sin(count * degree);
           const y =
@@ -75,8 +78,8 @@ export default {
           circle.setAttributeNS(null, "r", radius);
           text.setAttributeNS(null, "x", x);
           text.setAttributeNS(null, "y", y + 0.5 * radius);
-          line.setAttributeNS(null, "x2", x);
-          line.setAttributeNS(null, "y2", y);
+          // line.setAttributeNS(null, "x2", x);
+          // line.setAttributeNS(null, "y2", y);
           count += 1;
         }
         circle.setAttributeNS(
@@ -86,19 +89,19 @@ export default {
         );
         text.setAttributeNS(null, "text-anchor", "middle");
         text.setAttributeNS(null, "dominant-baseline", "hanging");
-        text.setAttributeNS(null, "font-size", Math.ceil(1.5 * radius) + "px");
-        line.setAttributeNS(null, "x1", center.x);
-        line.setAttributeNS(null, "y1", center.y);
-        line.setAttributeNS(null, "stroke", "black");
+        text.setAttributeNS(null, "font-size", Math.ceil(1 * radius) + "px");
+        // line.setAttributeNS(null, "x1", center.x);
+        // line.setAttributeNS(null, "y1", center.y);
+        // line.setAttributeNS(null, "stroke", "black");
         var textNode = document.createTextNode(value.name);
         text.appendChild(textNode);
-        this.svg.appendChild(line);
+        // this.svg.appendChild(line);
         this.svg.appendChild(circle);
         this.svg.appendChild(text);
 
         this.shapeArray.push(circle);
         this.textArray.push(text);
-        this.lineArray.push(line);
+        // this.lineArray.push(line);
       }
     },
   },
