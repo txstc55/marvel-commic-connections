@@ -17,6 +17,15 @@ def getInfoToJson():
     authorInfos = {}
     urls = []
 
+    # with open("characters.json", 'r') as outfile:
+    #     characterInfos = json.load(outfile)
+
+    # with open("comics.json", 'r') as outfile:
+    #     comicInfos = json.load(outfile)
+
+    # with open("authors.json", 'r') as outfile:
+    #     authorInfos = json.load(outfile)
+
     characterInd = 0
     comicInd = 0
     authorInd = 0
@@ -49,20 +58,6 @@ def getInfoToJson():
                         "https://www.marvel.com/comics/", ""), "characterIDs": [], "cover": ""}
                     comicInd += 1
 
-                    authorP = item.p
-                    if authorP != None:
-                        authors = item.p.findAll('a')
-                        for authorItem in authors:
-                            authorURL = authorItem['href'].replace(
-                                "https://www.marvel.com/comics/", "")
-                            authorName = authorItem.text.strip()
-                            if not authorURL in authorInfos:
-                                authorInfos[authorURL] = {
-                                    "name": authorName, "id": authorInd}
-                                authorInd += 1
-                            comicInfos[comicTitle]["authorIDs"].append(
-                                authorInfos[authorURL]["id"])
-
                 comicBookIDs.append(comicInfos[comicTitle]["id"])
                 comicInfos[comicTitle]["characterIDs"].append(
                     characterInfos[character]["id"])
@@ -70,27 +65,55 @@ def getInfoToJson():
             characterInfos[character]["comicIDs"] = comicBookIDs
             time.sleep(random.random() * 2)
 
-        def getComicCover(comic):
-            print(comic)
-            comicURL = "https://www.marvel.com/comics/" + comicInfos[comic]["url"]
-            print(comicURL)
+        from multiprocessing.pool import ThreadPool as Pool
+        tmp_author_array = {}
+        for item in comicInfos:
+            tmp_author_array[item] = []
+
+        # get comic cover and author
+        def getComicDetail(comic):
+            comicURL = "https://www.marvel.com/comics/" + \
+                comicInfos[comic]["url"]
+            print(comic, comicURL)
             comicPage = requests.get(comicURL)
             comicSoup = BeautifulSoup(comicPage.content, "html.parser")
             imgSrc = comicSoup.find("img", {"class": "frame-img"})["src"]
             comicInfos[comic]["cover"] = imgSrc
-            print(imgSrc)
-        
-        from multiprocessing.pool import ThreadPool as Pool
-        # from multiprocessing import Pool
+            # print(imgSrc)
 
-        pool_size = 10  # your "parallelness"
+            detailWrap = comicSoup.findAll("div", {"class": "detail-wrap"})
+
+            ## get the authors, creators
+            for item in detailWrap:
+                authors = item.findAll("a", href=True)
+                for author in authors:
+                    href = author["href"]
+                    name = author.text.strip()
+                    if "creators" in href:
+                        tmp_author_array[comic].append([href, name])
+            
+        
+
+        pool_size = 20  # your "parallelness"
         pool = Pool(pool_size)
         for comic in comicInfos:
-            pool.apply_async(getComicCover, (comic, ))
-            # getComicCover(comic)
+            pool.apply_async(getComicDetail, (comic, ))
 
         pool.close()
         pool.join()
+
+        for comic in tmp_author_array:
+            item = tmp_author_array[comic]
+            authorids = []
+            for authors in item:
+                link = authors[0].replace("https://www.marvel.com/comics/", "")
+                name = authors[1]
+                if not link in authorInfos:
+                    authorInfos[link] = {"name": name, "id": authorInd}
+                    print("Created author: ", name, link, authorInd)
+                    authorInd += 1
+                authorids.append(authorInfos[link])
+            comicInfos[comic]["authorIDs"] = authorids
 
     except:
         with open("characters.json", 'w') as outfile:
@@ -112,40 +135,40 @@ def getInfoToJson():
         json.dump(authorInfos, outfile)
 
 
-# getInfoToJson()
+getInfoToJson()
 
 
-characterInfos = {}
-comicInfos = {}
-authorInfos = {}
+# characterInfos = {}
+# comicInfos = {}
+# authorInfos = {}
 
 
-with open("characters.json", 'r') as outfile:
-    characterInfos = json.load(outfile)
+# with open("characters.json", 'r') as outfile:
+#     characterInfos = json.load(outfile)
 
 
-with open("comics.json", 'r') as outfile:
-    comicInfos = json.load(outfile)
+# with open("comics.json", 'r') as outfile:
+#     comicInfos = json.load(outfile)
 
-with open("authors.json", 'r') as outfile:
-    authorInfos = json.load(outfile)
+# with open("authors.json", 'r') as outfile:
+#     authorInfos = json.load(outfile)
 
 
-import pymongo
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = myclient["marvel"]
+# import pymongo
+# myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+# mydb = myclient["marvel"]
 
-characterCollections = mydb["characters"]
-for character in characterInfos:
-    characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "url":characterInfos[character]["url"], "comic_ids":list(set(characterInfos[character]["comicIDs"]))}
-    characterCollections.insert_one(characterItem)
+# characterCollections = mydb["characters"]
+# for character in characterInfos:
+#     characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "url":characterInfos[character]["url"], "comic_ids":list(set(characterInfos[character]["comicIDs"]))}
+#     characterCollections.insert_one(characterItem)
 
-comicCollections = mydb["comics"]
-for comic in comicInfos:
-    comicItem = {"_id": comicInfos[comic]["id"],"cover":comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(comicInfos[comic]["authorIDs"])), "url": comicInfos[comic]["url"], "character_ids":list(set(comicInfos[comic]["characterIDs"]))}
-    comicCollections.insert_one(comicItem)
+# comicCollections = mydb["comics"]
+# for comic in comicInfos:
+#     comicItem = {"_id": comicInfos[comic]["id"],"cover":comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(comicInfos[comic]["authorIDs"])), "url": comicInfos[comic]["url"], "character_ids":list(set(comicInfos[comic]["characterIDs"]))}
+#     comicCollections.insert_one(comicItem)
 
-authorCollections = mydb["authors"]
-for author in authorInfos:
-    authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]["name"], "url": author}
-    authorCollections.insert_one(authorItem)
+# authorCollections = mydb["authors"]
+# for author in authorInfos:
+#     authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]["name"], "url": author}
+#     authorCollections.insert_one(authorItem)
