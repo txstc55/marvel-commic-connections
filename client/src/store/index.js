@@ -65,7 +65,7 @@ export default new Vuex.Store({
         for (const item of data) {
           result[item.character_name] = item._id
         }
-        console.log(result);
+        // console.log(result);
         context.commit("SET_CHARACTER_NAME_AND_ID", result);
         context.commit("SET_INITIAL_LOAD", true);
       }).catch(e => {
