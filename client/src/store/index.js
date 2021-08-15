@@ -58,6 +58,7 @@ export default new Vuex.Store({
   },
   actions: {
     getCharacterNameAndID(context) {
+      console.log("Start")
       context.commit("SET_INITIAL_LOAD", false);
       axios.get(api_url + "characters").then(response => {
         const data = response.data;
@@ -68,6 +69,7 @@ export default new Vuex.Store({
         // console.log(result);
         context.commit("SET_CHARACTER_NAME_AND_ID", result);
         context.commit("SET_INITIAL_LOAD", true);
+        console.log("end");
       }).catch(e => {
         console.log("ERROR: ", e);
       })
