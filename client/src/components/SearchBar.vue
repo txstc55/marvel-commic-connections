@@ -41,10 +41,12 @@ export default {
       val && val !== this.select && this.querySelection(val);
     },
     selectedCharacter(val) {
-      store.dispatch("selectCharacter", val);
-      store.dispatch("updateCharacterInfos");
-      store.dispatch("updateMouseSelectedCharacterID", -1);
-      store.dispatch("updateHoverCharacterID", -1);
+      if (val != null) {
+        store.dispatch("selectCharacter", val);
+        store.dispatch("updateCharacterInfos");
+        store.dispatch("updateMouseSelectedCharacterID", -1);
+        store.dispatch("updateHoverCharacterID", -1);
+      }
     },
     initialLoad(val) {
       if (val) {

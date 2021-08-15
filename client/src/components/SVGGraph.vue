@@ -360,10 +360,9 @@ export default {
     },
     wheel(e) {
       var scale = e.deltaY < 0 ? 0.95 : 1.05;
-
       if (
         this.viewboxScale * scale < 8 &&
-        this.viewboxScale * scale > 1 / 256
+        this.viewboxScale * scale > 1 / 20
       ) {
         var mpos = {
           x: this.mousePosition.x * this.viewboxScale,
