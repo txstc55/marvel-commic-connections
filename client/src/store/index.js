@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 const port = process.env.PORT || 5000; // the port we will be using
-const api_url = "http://localhost:" + port + "/"
+const api_url = "http://134.209.65.198:" + port + "/"
 
 Vue.use(Vuex)
 
