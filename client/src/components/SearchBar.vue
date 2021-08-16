@@ -64,6 +64,11 @@ export default {
         this.querySelection(this.search);
       }
     },
+    selectedCharacterName(val) {
+      console.log(val);
+      this.search = val;
+      this.selectedCharacter = val;
+    },
   },
   methods: {
     querySelection(v) {
@@ -85,9 +90,11 @@ export default {
     queryCount() {
       return store.getters.queryCount;
     },
+    selectedCharacterName() {
+      return store.getters.selectedCharacterName;
+    },
   },
   created() {},
-  mounted() {
-  },
+  mounted() {},
 };
 </script>

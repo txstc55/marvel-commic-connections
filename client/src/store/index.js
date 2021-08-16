@@ -62,6 +62,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateSelectedCharacterName(context, name) {
+      context.commit("SET_SELECTED_CHARACTER_NAME", name);
+    },
     getQueryCount(context) {
       axios.get(api_url + "count").then(response => {
         context.commit("SET_QUERY_COUNT", response.data[0].query_count)
