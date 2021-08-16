@@ -1,3 +1,4 @@
+import pymongo
 import requests
 from bs4 import BeautifulSoup
 import time
@@ -83,7 +84,7 @@ def getInfoToJson():
 
             detailWrap = comicSoup.findAll("div", {"class": "detail-wrap"})
 
-            ## get the authors, creators
+            # get the authors, creators
             for item in detailWrap:
                 authors = item.findAll("a", href=True)
                 for author in authors:
@@ -91,8 +92,6 @@ def getInfoToJson():
                     name = author.text.strip()
                     if "creators" in href:
                         tmp_author_array[comic].append([href, name])
-            
-        
 
         pool_size = 20  # your "parallelness"
         pool = Pool(pool_size)
@@ -154,21 +153,30 @@ with open("authors.json", 'r') as outfile:
     authorInfos = json.load(outfile)
 
 
-import pymongo
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+myclient.drop_database("marvel")
 mydb = myclient["marvel"]
 
 characterCollections = mydb["characters"]
 for character in characterInfos:
-    characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "url":characterInfos[character]["url"], "comic_ids":list(set(characterInfos[character]["comicIDs"]))}
+    characterItem = {"_id": characterInfos[character]["id"], "character_name": character,
+                     "url": characterInfos[character]["url"], "comic_ids": list(set(characterInfos[character]["comicIDs"]))}
     characterCollections.insert_one(characterItem)
+
+author_comic_count = {}
 
 comicCollections = mydb["comics"]
 for comic in comicInfos:
-    comicItem = {"_id": comicInfos[comic]["id"],"cover":comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(comicInfos[comic]["authorIDs"])), "url": comicInfos[comic]["url"], "character_ids":list(set(comicInfos[comic]["characterIDs"]))}
+    comicItem = {"_id": comicInfos[comic]["id"], "cover": comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(
+        comicInfos[comic]["authorIDs"])), "url": comicInfos[comic]["url"], "character_ids": list(set(comicInfos[comic]["characterIDs"]))}
+    for item in list(set(comicInfos[comic]["authorIDs"])):
+        if not item in author_comic_count:
+            author_comic_count[item] = 0
+        author_comic_count[item] += 1
     comicCollections.insert_one(comicItem)
 
 authorCollections = mydb["authors"]
 for author in authorInfos:
-    authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]["name"], "url": author}
+    authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]
+                  ["name"], "url": author, "comic_count": author_comic_count[authorInfos[author]["id"]]}
     authorCollections.insert_one(authorItem)

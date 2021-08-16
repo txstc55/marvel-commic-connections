@@ -15,6 +15,10 @@ const authorSchema = new Schema(
             type: String,
             default: 'authors/'
         },
+        comic_count: {
+            type: Number,
+            default: 0
+        }
     },
     { collection: 'authors' }
 );

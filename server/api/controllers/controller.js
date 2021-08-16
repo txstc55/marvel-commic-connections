@@ -4,7 +4,7 @@ const comics = mongoose.model('comics');
 const authors = mongoose.model('authors');
 
 exports.list_all_characters = async (_, res) => {
-    return await characters.find({}, {_id: 1, character_name: 1}, (err, allCharacters) => {
+    return await characters.find({}, { _id: 1, character_name: 1 }, (err, allCharacters) => {
         if (err) res.send(err);
         res.json(allCharacters);
     });
@@ -88,7 +88,7 @@ exports.show_one_character = async (req, res) => {
             }
             else {
                 result = {}
-                result["character"] = { "name": data.character_name, "url": data.url, "id": parseInt(characterID)};
+                result["character"] = { "name": data.character_name, "url": data.url, "id": parseInt(characterID) };
 
                 // get all the comic items
                 comicIDs = data.comic_ids;
@@ -115,7 +115,7 @@ exports.show_one_character = async (req, res) => {
 
                 // get all the authors
                 authorItems = await authorIDs.map(async id => {
-                    return await get_one_author_info(id).then(data => { return { "name": data.author_name, "url": data.url, "id": id } });
+                    return await get_one_author_info(id).then(data => { return { "name": data.author_name, "url": data.url, "id": id, "comic_count": data.comic_count } });
                 })
                 result["authors"] = await Promise.all(authorItems);
 
