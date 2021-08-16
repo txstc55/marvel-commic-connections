@@ -1,7 +1,11 @@
 <template>
   <v-container>
     <h1>Search A Marvel Character</h1>
-    <h3>See how many other characters are connected to it based on comic book appearances</h3>
+    <h3>
+      See how many other characters are connected to it based on comic book
+      appearances
+    </h3>
+    <h4>Total search count: {{ queryCount }}</h4>
     <v-container class="pt-14 px-6">
       <v-autocomplete
         v-model="selectedCharacter"
@@ -45,6 +49,7 @@ export default {
         store.dispatch("updateCharacterInfos");
         store.dispatch("updateMouseSelectedCharacterID", -1);
         store.dispatch("updateHoverCharacterID", -1);
+        store.dispatch("getQueryCount");
       }
     },
     initialLoad(val) {
@@ -77,8 +82,12 @@ export default {
     initialLoad() {
       return store.getters.initialLoad;
     },
+    queryCount() {
+      return store.getters.queryCount;
+    },
   },
   created() {},
-  mounted() {},
+  mounted() {
+  },
 };
 </script>

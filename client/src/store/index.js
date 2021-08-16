@@ -21,6 +21,7 @@ export default new Vuex.Store({
     hoverCharacterID: -1, // what character we are hovering
     mouseSelectedCharacterID: -1, // what character ID we are selecting
     initialLoad: false, // have we finished the initial loading of characters
+    queryCount: "",
   },
   mutations: {
     SET_SELECTED_CHARACTER_NAME(state, name) {
@@ -55,11 +56,20 @@ export default new Vuex.Store({
     },
     SET_INITIAL_LOAD(state, bool) {
       state.initialLoad = bool;
+    },
+    SET_QUERY_COUNT(state, count) {
+      state.queryCount = count;
     }
   },
   actions: {
+    getQueryCount(context) {
+      axios.get(api_url + "count").then(response => {
+        context.commit("SET_QUERY_COUNT", response.data[0].query_count)
+      }).catch(e => {
+        console.log("ERROR: ", e);
+      })
+    },
     getCharacterNameAndID(context) {
-      console.log("Start")
       context.commit("SET_INITIAL_LOAD", false);
       axios.get(api_url + "characters").then(response => {
         const data = response.data;
@@ -70,7 +80,6 @@ export default new Vuex.Store({
         // console.log(result);
         context.commit("SET_CHARACTER_NAME_AND_ID", result);
         context.commit("SET_INITIAL_LOAD", true);
-        console.log("end");
       }).catch(e => {
         console.log("ERROR: ", e);
       })
@@ -151,14 +160,6 @@ export default new Vuex.Store({
     mouseSelectedCharacterID: state => state.mouseSelectedCharacterID,
     oneComicInfo: state => id => state.comicInfos[id],
     initialLoad: state => state.initialLoad,
-    queryCount: () => {
-      // axios.get(api_url + "count").then(response => {
-      //   return response.query_count;
-      // }).catch(e => {
-      //   console.log("ERROR: ", e);
-      //   return -1;
-      // })
-      return 3;
-    }
+    queryCount: state => state.queryCount,
   }
 })

@@ -55,6 +55,7 @@ export default {
   },
   mounted() {
     store.dispatch("getCharacterNameAndID");
+    store.dispatch("getQueryCount");
   },
 };
 </script>
