@@ -108,17 +108,6 @@ export default {
         "</a>, "
       );
     },
-    characterURL(id) {
-      const characterName = store.getters.connectedCharacterInfos[id].name;
-      const url = store.getters.connectedCharacterInfos[id].url;
-      return (
-        '<a href="https://www.marvel.com/comics/' +
-        url +
-        '" target= "_blank">' +
-        characterName +
-        "</a>, "
-      );
-    },
 
     onScroll({ target: { scrollTop, clientHeight, scrollHeight } }) {
       if (scrollTop + clientHeight >= scrollHeight) {

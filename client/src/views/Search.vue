@@ -18,7 +18,7 @@
           </v-col>
           <v-col cols="6">
             <div class="pane" id="right">
-              <ComicList />
+              <AuthorList />
             </div>
           </v-col>
         </v-row>
@@ -34,6 +34,7 @@ import SearchBar from "@/components/SearchBar.vue";
 import CharacterList from "@/components/CharacterList.vue";
 import ComicList from "@/components/ComicList.vue";
 import SVGGraph from "@/components/SVGGraph.vue";
+import AuthorList from "@/components/AuthorList.vue";
 
 export default {
   name: "Search",
@@ -42,6 +43,7 @@ export default {
     CharacterList,
     ComicList,
     SVGGraph,
+    AuthorList,
   },
   data() {
     return {};
