@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const characters = mongoose.model('characters');
 const comics = mongoose.model('comics');
 const authors = mongoose.model('authors');
+const metadata = mongoose.model('metadata')
 
 exports.list_all_characters = async (_, res) => {
     return await characters.find({}, { _id: 1, character_name: 1 }, (err, allCharacters) => {
@@ -9,6 +10,13 @@ exports.list_all_characters = async (_, res) => {
         res.json(allCharacters);
     });
 };
+
+exports.get_query_count = async (_, res) => {
+    return await metadata.find({ _id: 0 }, (err, result) => {
+        if (err) res.send(err);
+        res.json(result);
+    })
+}
 
 exports.list_all_comics = async (_, res) => {
     return await comics.find({}, (err, allComics) => {
@@ -120,6 +128,10 @@ exports.show_one_character = async (req, res) => {
                 result["authors"] = await Promise.all(authorItems);
 
                 res.send(result);
+                console.log("Find one");
+                metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
+                    console.log(err, brote);
+                });
             }
         })
         .catch(err => {

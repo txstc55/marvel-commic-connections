@@ -17,7 +17,11 @@ module.exports = app => {
     app
         .route('/characters/:id')
         .get(controllers.show_one_character)
-        .post();
+        .post()
 
+    app
+        .route('/count')
+        .get(controllers.get_query_count)
+        .post()
 
 };

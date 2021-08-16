@@ -4,6 +4,7 @@ import axios from 'axios'
 
 const port = process.env.PORT || 5000; // the port we will be using
 const api_url = "http://134.209.65.198:" + port + "/"
+// const api_url = "https://localhost:" + port + "/"
 
 Vue.use(Vuex)
 
@@ -150,5 +151,14 @@ export default new Vuex.Store({
     mouseSelectedCharacterID: state => state.mouseSelectedCharacterID,
     oneComicInfo: state => id => state.comicInfos[id],
     initialLoad: state => state.initialLoad,
+    queryCount: () => {
+      // axios.get(api_url + "count").then(response => {
+      //   return response.query_count;
+      // }).catch(e => {
+      //   console.log("ERROR: ", e);
+      //   return -1;
+      // })
+      return 3;
+    }
   }
 })

@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <h1>Search A Marvel Character</h1>
-    <h3>See how many other characters are connected to it</h3>
-    <h3>Based on comic book appearances</h3>
+    <h3>See how many other characters are connected to it based on comic book appearances</h3>
     <v-container class="pt-14 px-6">
       <v-autocomplete
         v-model="selectedCharacter"

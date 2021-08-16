@@ -154,9 +154,11 @@ with open("authors.json", 'r') as outfile:
 
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-myclient.drop_database("marvel")
+# myclient.drop_database("marvel")
 mydb = myclient["marvel"]
 
+characterCollections = mydb["characters"]
+characterCollections.drop()
 characterCollections = mydb["characters"]
 for character in characterInfos:
     characterItem = {"_id": characterInfos[character]["id"], "character_name": character,
@@ -165,6 +167,8 @@ for character in characterInfos:
 
 author_comic_count = {}
 
+comicCollections = mydb["comics"]
+comicCollections.drop()
 comicCollections = mydb["comics"]
 for comic in comicInfos:
     comicItem = {"_id": comicInfos[comic]["id"], "cover": comicInfos[comic]["cover"], "comic_name": comic, "author_ids": list(set(
@@ -176,7 +180,13 @@ for comic in comicInfos:
     comicCollections.insert_one(comicItem)
 
 authorCollections = mydb["authors"]
+authorCollections.drop()
+authorCollections = mydb["authors"]
 for author in authorInfos:
     authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]
                   ["name"], "url": author, "comic_count": author_comic_count[authorInfos[author]["id"]]}
     authorCollections.insert_one(authorItem)
+
+if not "metadata" in mydb.list_collection_names():
+    metadata = mydb["metadata"]
+    metadata.insert_one({"_id": 0, "query_count": 1})

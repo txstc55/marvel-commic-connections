@@ -13,6 +13,7 @@ app.use(cors());
 global.Characters = require('./api/models/characterModel');
 global.Comics = require('./api/models/comicModel');
 global.Authors = require('./api/models/authorModel');
+global.Metadata = require('./api/models/metadataModel')
 
 const routes = require('./api/routes/route');
 
