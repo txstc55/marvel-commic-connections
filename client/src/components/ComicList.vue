@@ -22,11 +22,11 @@
                 ' characters in ' +
                 currentCharacter.comics.length +
                 ' comics'
-              : ' co-appeared with ') +
+              : ' co-appeared with ' +
                 selectedCharacterName +
                 ' in ' +
                 currentCharacter.comics.length +
-                ' comics'
+                ' comics')
           "
         ></p>
       </v-col>
