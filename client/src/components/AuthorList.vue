@@ -42,7 +42,7 @@
                     Total Comic Participations:
                     {{ authors[authorID].comic_count }}
                     <br>
-                    Participations involve {{ currentCharacter.name + (currentCharacter.id == selectedCharacterID? "":" and " + selectedCharacterName )+ ": "}}
+                    comics involving {{ currentCharacter.name + (currentCharacter.id == selectedCharacterID? "":" and " + selectedCharacterName )+ ": "}}
                     {{ authors[authorID].character_comic_count}}
                   </v-card-subtitle>
                   <v-card-actions>
