@@ -129,7 +129,7 @@ exports.show_one_character = async (req, res) => {
 
                 res.send(result);
                 console.log(characterID,": ", result["character"]["name"]);
-                await metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
+                metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
                     // console.log(err, brote);
                 });
             }
