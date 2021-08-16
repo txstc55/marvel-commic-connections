@@ -12,18 +12,17 @@
     </v-row>
     <v-row dense v-else>
       <v-col cols="12" dense>
-        <p class="text-h4" v-text="currentCharacter.name"></p>
-        <br />
         <p
           class="text-h6"
           v-text="
-            currentCharacter.id == selectedCharacterID
-              ? 'Co-appeared with ' +
+            currentCharacter.name + 
+            (currentCharacter.id == selectedCharacterID
+              ? ' co-appeared with ' +
                 this.connectCount +
                 ' characters in ' +
                 currentCharacter.comics.length +
                 ' comics'
-              : 'Co-appeared with ' +
+              : ' co-appeared with ') +
                 selectedCharacterName +
                 ' in ' +
                 currentCharacter.comics.length +
@@ -68,8 +67,8 @@
                   </v-card-actions>
                 </div>
                 <v-avatar
-                  class="ml-3 mr-1"
-                  size="200"
+                  class="ml-3 mr-1 mt-5 mb-5"
+                  size="30%"
                   tile
                   style="float: right"
                 >
@@ -185,12 +184,12 @@ export default {
 
 <style scoped>
 .pane {
-  height: 75vh;
+  height: 69vh;
   max-height: 100%;
   overflow: scroll;
   /* border: solid 2px; */
   flex: 1 1 auto;
-  width: 40vw;
+  width: 17vw;
   /* text-align: left; */
 }
 

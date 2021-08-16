@@ -5,23 +5,35 @@
       <div class="pane" id="left">
         <CharacterList />
       </div>
+
       <div class="pane">
         <SVGGraph />
       </div>
-      <div class="pane" id="right">
-        <ComicList />
-      </div>
+      <v-container class="comic-and-author">
+        <v-row>
+          <v-col cols="6">
+            <div class="pane" id="right">
+              <ComicList />
+            </div>
+          </v-col>
+          <v-col cols="6">
+            <div class="pane" id="right">
+              <ComicList />
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import store from "../store"
+import store from "../store";
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterList from "@/components/CharacterList.vue";
 import ComicList from "@/components/ComicList.vue";
-import SVGGraph from "@/components/SVGGraph.vue"
+import SVGGraph from "@/components/SVGGraph.vue";
 
 export default {
   name: "Search",
@@ -33,6 +45,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    selectedCharacterName() {
+      return store.getters.selectedCharacterName;
+    },
   },
   mounted() {
     store.dispatch("getCharacterNameAndID");
@@ -62,22 +79,26 @@ body {
   flex-flow: row;
 }
 .pane {
-  height: 83vh;
-  max-height: 83vh;
+  height: 69vh;
+  max-height: 69vh;
   overflow: scroll;
   /* border: solid 2px; */
   flex: 1 1 auto;
-  width: 40vw;
+  width: 46vw;
   text-align: left;
 }
 
 #left {
   /* border-color: yellow; */
-  width: 5vw;
+  width: 20vw;
+}
+.comic-and-author {
+  width: 34vw;
+  /* height: 10%; */
 }
 
 #right {
   /* border-color: red; */
-  width: 5vw;
+  width: 17vw;
 }
 </style>

@@ -43,9 +43,8 @@ export default {
       return rgb;
     },
     getDim() {
-      var svg = document.getElementById("svg");
-      this.width = svg.clientWidth;
-      this.height = svg.clientHeight;
+      this.width = this.svg.clientWidth;
+      this.height = this.svg.clientHeight;
     },
     windowResize() {
       this.getDim();
@@ -360,10 +359,7 @@ export default {
     },
     wheel(e) {
       var scale = e.deltaY < 0 ? 0.95 : 1.05;
-      if (
-        this.viewboxScale * scale < 8 &&
-        this.viewboxScale * scale > 1 / 20
-      ) {
+      if (this.viewboxScale * scale < 8 && this.viewboxScale * scale > 1 / 20) {
         var mpos = {
           x: this.mousePosition.x * this.viewboxScale,
           y: this.mousePosition.y * this.viewboxScale,
