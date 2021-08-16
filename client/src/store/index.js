@@ -105,7 +105,7 @@ export default new Vuex.Store({
           }
           var authorInfos = {}
           for (const item of authors) {
-            authorInfos[item.id] = { "name": item.name, "url": item.url };
+            authorInfos[item.id] = { "name": item.name, "url": item.url, "comic_count": item.comic_count };
           }
 
           context.commit("SET_COMIC_INFOS", comicInfos);
