@@ -128,9 +128,9 @@ exports.show_one_character = async (req, res) => {
                 result["authors"] = await Promise.all(authorItems);
 
                 res.send(result);
-                console.log("Find one");
-                metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
-                    console.log(err, brote);
+                console.log(characterID,": ", result["character"]["name"]);
+                await metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
+                    // console.log(err, brote);
                 });
             }
         })
