@@ -42,15 +42,28 @@
               class="text-subtitle-1"
             ></v-card-text>
             <v-card-actions>
-              <v-btn
-                class="ml-1 mt-2"
-                outlined
-                small
-                :href="'https://www.marvel.com/comics/' + char.url"
-                target="_blank"
-              >
-                CHECK CHARACTER
-              </v-btn>
+              <v-row>
+                <v-col cols="auto">
+                  <v-btn
+                    class="ml-1 mt-1"
+                    outlined
+                    small
+                    :href="'https://www.marvel.com/comics/' + char.url"
+                    target="_blank"
+                  >
+                    CHECK CHARACTER
+                  </v-btn> </v-col
+                ><v-col cols="auto">
+                  <v-btn
+                    class="ml-1 mt-1"
+                    outlined
+                    small
+                    @click="newSearch(char.name)"
+                  >
+                    BUILD CONNECTION
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-card-actions>
           </v-card>
         </v-hover>
@@ -110,6 +123,15 @@ export default {
         return second["comics"].length - first["comics"].length;
       });
       return items;
+    },
+    newSearch(val) {
+      if (val != null && val!=store.getters.selectedCharacterName) {
+        store.dispatch("selectCharacter", val);
+        store.dispatch("updateCharacterInfos");
+        store.dispatch("updateMouseSelectedCharacterID", -1);
+        store.dispatch("updateHoverCharacterID", -1);
+        store.dispatch("getQueryCount");
+      }
     },
   },
   computed: {
