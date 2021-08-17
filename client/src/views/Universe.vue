@@ -22,7 +22,7 @@ export default {
       nodes: [],
       links: [],
       options: {
-        force: 1000,
+        force: 1500,
         nodeLabels: true,
         linkWidth: 2,
         forces: {
@@ -89,6 +89,7 @@ export default {
           "fffbd5",
           node._size / maximumSize
         );
+        node._size = Math.pow(node._size, 1.2);
         if (Math.floor(node._size) <= 40) {
           node._labelClass = "txt" + Math.floor(node._size);
         }
