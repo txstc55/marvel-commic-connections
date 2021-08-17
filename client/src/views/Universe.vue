@@ -10,6 +10,7 @@
 <style src="vue-d3-network/dist/vue-d3-network.css"></style>
 /<script>
 import D3Network from "vue-d3-network";
+import store from "../store"; // import store
 export default {
   name: "Universe",
   components: {
@@ -32,6 +33,7 @@ export default {
         { sid: 1, tid: 2, _color: "red" },
         { sid: 3, tid: 4, _color: "rebeccapurple" },
         { sid: 4, tid: 5 },
+        { sid: 5, tid: 5 },
         { sid: 5, tid: 6 },
         { sid: 7, tid: 8 },
         { sid: 5, tid: 8 },
@@ -39,21 +41,42 @@ export default {
         { sid: 7, tid: 9 },
       ],
       options: {
-        force: 3000,
-        nodeSize: 20,
+        force: 100,
+        nodeSize: 5,
         nodeLabels: true,
         linkWidth: 5,
         // size:{ w:600, h:600},
       },
     };
   },
+  computed: {
+    networkLoaded() {
+      return store.getters.networkLoaded;
+    },
+  },
+  watch: {
+    networkLoaded(val) {
+      if (val) {
+        console.log("je");
+        const network = store.getters.network;
+        this.nodes = [];
+        this.links = [];
+        for (const [key, value] of Object.entries(network)) {
+          this.nodes.push({ id: key, name: value.name, _size: Math.log2(value.relatives + 10) + 5 });
+          this.links.push({ sid: key, tid: value.closest_character });
+        }
+      }
+    },
+  },
   method: {},
   mounted() {},
-  created() {},
+  created() {
+    store.dispatch("getNetwork");
+  },
 };
 </script>
 
-<style scoped>
+<style>
 #universeContainer {
   display: flex;
   flex-flow: column;
