@@ -41,9 +41,16 @@
                   <v-card-subtitle class="text-subtitle-2">
                     Total Comic Participations:
                     {{ authors[authorID].comic_count }}
-                    <br>
-                    Comics involving {{ currentCharacter.name + (currentCharacter.id == selectedCharacterID? "":" and " + selectedCharacterName )+ ": "}}
-                    {{ authors[authorID].character_comic_count}}
+                    <br />
+                    Comics involving
+                    {{
+                      currentCharacter.name +
+                      (currentCharacter.id == selectedCharacterID
+                        ? ""
+                        : " and " + selectedCharacterName) +
+                      ": "
+                    }}
+                    {{ authors[authorID].character_comic_count }}
                   </v-card-subtitle>
                   <v-card-actions>
                     <v-btn
@@ -85,17 +92,9 @@ export default {
     };
   },
   methods: {
-    authorURL(id) {
-      return (
-        '<a href="https://www.marvel.com/comics/' +
-        this.authors[id].url +
-        '" target= "_blank">' +
-        this.authors[id].name +
-        "</a>, "
-      );
-    },
-
     onScroll({ target: { scrollTop, clientHeight, scrollHeight } }) {
+      // we want to limit how many comics to show each time
+      // for the sake of a fluent experience
       if (scrollTop + clientHeight >= scrollHeight) {
         this.maximumLoad += 20;
       }
@@ -147,11 +146,14 @@ export default {
   },
   watch: {
     async stage(newStage) {
+      // whenever we finished loading a character
+      // we want to modify the result for rendering
       if (newStage == "FINISHED") {
         this.maximumLoad = 20;
         this.comics = store.getters.comicInfos;
         this.authors = store.getters.authorInfos;
-
+        // if there is no comic, we still need to create
+        // one character, itself
         if (Object.keys(this.comics).length == 0) {
           this.currentCharacter = {
             name: this.selectedCharacterName,
@@ -169,6 +171,9 @@ export default {
       }
     },
     async hoverCharacterID(newCharacterID) {
+      // whenever we hover on a character
+      // we will need to change the authors etc
+      // to match the hovered on character
       this.maximumLoad = 20;
       document.getElementById("authorDiv").scrollTop = 0;
       if (newCharacterID != -1 && Object.keys(this.comics).length > 0) {

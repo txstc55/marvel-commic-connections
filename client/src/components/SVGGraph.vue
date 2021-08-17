@@ -1,12 +1,5 @@
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="100%"
-    height="100%"
-    id="svg"
-    @mouseover="mouseover"
-    @mouseout="mouseout"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" id="svg">
     Sorry, your browser does not support inline SVG.
   </svg>
 </template>
@@ -19,14 +12,14 @@ export default {
     return {
       width: 0,
       height: 0,
-      mouseStartPosition: { x: 0, y: 0 },
+      mouseStartPosition: { x: 0, y: 0 }, // for resize etc
       mousePosition: { x: 0, y: 0 },
       viewboxStartPosition: { x: 0, y: 0 },
       viewboxPosition: { x: 0, y: 0 },
       viewboxSize: { x: 0, y: 0 },
       viewboxScale: 1.0,
-      characters: [],
-      shapeMap: {},
+      characters: [], // the list of characters
+      shapeMap: {}, // all the shapes on svg
       svg: null,
       svgns: "http://www.w3.org/2000/svg",
       mouseDown: false,
@@ -39,20 +32,24 @@ export default {
   },
   methods: {
     parse_rgb_string(rgb) {
+      // get the rgb string to list of rgb value
       rgb = rgb.replace(/[^\d,]/g, "").split(",");
       return rgb;
     },
     getDim() {
+      // get the dimension of the svg
       this.width = this.svg.clientWidth;
       this.height = this.svg.clientHeight;
     },
     windowResize() {
+      // fire whenever window resize, we want to change the viewbox etc
       this.getDim();
       this.viewboxSize = { x: this.width, y: this.height };
       this.setviewbox();
     },
     // draw all the nodes
     computeColor(fraction) {
+      // return the color gradient
       return (
         "rgba(" +
         Math.ceil(20 - 20 * fraction) +
@@ -63,16 +60,12 @@ export default {
         ", 0.8)"
       );
     },
-    mouseover() {
-      document.body.style.overflow = "hidden";
-    },
-    mouseout() {
-      document.body.style.overflow = "auto";
-      this.mouseDown = false;
-    },
     drawNodes() {
+      // compute center of the svg
       const center = { x: this.width / 2, y: this.height / 2 };
+      // we want the standard line length to be a fraction of the svg
       const lineLength = Math.min(center.x, center.y) * 0.9;
+      // we want the radius to be proportional to the line length
       var radius =
         Object.keys(this.characters).length > 0
           ? Math.max(
@@ -80,20 +73,26 @@ export default {
               Math.floor(lineLength / Object.keys(this.characters).length)
             )
           : 0;
-
+      // scale up or down the radius a bit
       radius *= Math.max(
         0.5,
         Math.log2(Object.keys(this.characters).length) - 3
       );
       radius = Math.min(radius, 0.025 * lineLength);
 
+      // the degree difference between each node
+      // since we are going for a circular one
       const degree =
         Object.keys(this.characters).length > 0
           ? (2 * Math.PI) / (Object.keys(this.characters).length - 1)
           : 0;
+
+      // for computing the degree
       var count = 0;
+      // a scalar for how close this character is to the center character
       var relevanceScalar = 1.0;
       for (const [key, value] of Object.entries(this.characters)) {
+        // we want a circle and a text
         var circle = document.createElementNS(this.svgns, "circle");
         var text = document.createElementNS(this.svgns, "text");
         // var line = document.createElementNS(this.svgns, "line");
@@ -113,6 +112,7 @@ export default {
           );
           relevanceScalar = 2.0;
         } else {
+          // just scalar shit
           relevanceScalar =
             1.3 - Math.sqrt(Math.sqrt(value.comics.length / this.totalComics));
           var randomScalar = Math.random() * 0.1 + 0.95;
@@ -137,7 +137,6 @@ export default {
               radius *
               Math.sqrt((2.0 * value.comics.length) / this.totalComics)
           );
-          circle.setAttributeNS(null, "onmouseout", "");
           text.setAttributeNS(null, "x", x);
           text.setAttributeNS(
             null,
@@ -156,6 +155,7 @@ export default {
           "style",
           "fill: " + this.computeColor(value.comics.length / this.totalComics)
         );
+        // we want the circle to be draggable, but not the text
         circle.setAttributeNS(null, "class", "draggable");
         circle.setAttributeNS(null, "id", value.id);
         text.setAttributeNS(null, "text-anchor", "middle");
@@ -306,20 +306,28 @@ export default {
       this.svg.removeEventListener("mouseup", this.mouseup);
     },
     mousemove(e) {
+      // when we are holding a circle
+      // we do not want to update the character id
       if (this.mouseSelectedCharacterID == -1) {
-        if (e.target.classList.contains("draggable")) {
-          if (e.target.id != store.getters.hoverCharacterID) {
-            store.dispatch("updateHoverCharacterID", e.target.id);
-          }
-        } else {
-          if (store.getters.hoverCharacterID != -1) {
-            store.dispatch("updateHoverCharacterID", -1);
+        if (!this.mouseDown) {
+          if (e.target.classList.contains("draggable")) {
+            if (e.target.id != store.getters.hoverCharacterID) {
+              store.dispatch("updateHoverCharacterID", e.target.id);
+            }
+          } else {
+            if (store.getters.hoverCharacterID != -1) {
+              store.dispatch("updateHoverCharacterID", -1);
+            }
           }
         }
       }
+      // when we move cursor
+      // we want either to move the circle
+      // or move the canvas
       this.mousePosition.x = e.offsetX;
       this.mousePosition.y = e.offsetY;
       if (this.mouseDown) {
+        // console.log(this.hoverCharacterID);
         if (this.hoverCharacterID != -1) {
           var CTM = this.svg.getScreenCTM();
           var coord = {
@@ -497,5 +505,6 @@ svg {
   /* position: absolute; */
   /* top:0;
     left:0; */
+  overflow: hidden;
 }
 </style>

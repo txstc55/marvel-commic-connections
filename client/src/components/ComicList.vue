@@ -15,7 +15,7 @@
         <p
           class="text-h6"
           v-text="
-            currentCharacter.name + 
+            currentCharacter.name +
             (currentCharacter.id == selectedCharacterID
               ? ' co-appeared with ' +
                 this.connectCount +
@@ -100,6 +100,7 @@ export default {
   },
   methods: {
     authorURL(id) {
+      // convert a url into the raw html tag
       return (
         '<a href="https://www.marvel.com/comics/' +
         this.authors[id].url +
@@ -110,6 +111,7 @@ export default {
     },
 
     onScroll({ target: { scrollTop, clientHeight, scrollHeight } }) {
+      // whenever scroled to the bottom, we allow more enetries to be loaded
       if (scrollTop + clientHeight >= scrollHeight) {
         this.maximumLoad += 20;
       }
@@ -134,10 +136,14 @@ export default {
   },
   watch: {
     async stage(newStage) {
+      // whenever the stage changes
       if (newStage == "FINISHED") {
         this.maximumLoad = 20;
+        // get all the comics correlated to this character
         this.comics = store.getters.comicInfos;
+        // get all the authors correlated to this character
         this.authors = store.getters.authorInfos;
+        // we want to create one entry even if there is no comic
         if (Object.keys(this.comics).length == 0) {
           this.currentCharacter = {
             name: this.selectedCharacterName,
@@ -158,6 +164,8 @@ export default {
       }
     },
     async hoverCharacterID(newCharacterID) {
+      // whenever hovered onto a new character
+      // we will get the new informations
       this.maximumLoad = 20;
       document.getElementById("comicDiv").scrollTop = 0;
       if (newCharacterID != -1 && Object.keys(this.comics).length > 0) {

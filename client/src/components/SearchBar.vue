@@ -41,9 +41,12 @@ export default {
   },
   watch: {
     search(val) {
+      // the search value
       val && val !== this.select && this.querySelection(val);
     },
     selectedCharacter(val) {
+      // whenever we start searching
+      // fire those functions to the store
       if (val != null) {
         store.dispatch("selectCharacter", val);
         store.dispatch("updateCharacterInfos");
@@ -53,6 +56,7 @@ export default {
       }
     },
     initialLoad(val) {
+      // we want to query a random character on the first load
       if (val) {
         this.allCharacterNames = store.getters.allCharacterNames;
         console.log("Loaded " + this.allCharacterNames.length + " characters");
@@ -67,6 +71,7 @@ export default {
   },
   methods: {
     querySelection(v) {
+      // don't need to know much its just for what characters to show up
       this.loading = true; // now loading selections
       v = (v || "").toLowerCase();
       setTimeout(() => {

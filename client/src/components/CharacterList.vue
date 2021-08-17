@@ -94,6 +94,9 @@ export default {
   },
   methods: {
     updateHover(id) {
+      // on hover, we want to change the hoverid to the store
+      // for other components to see
+      // we also need to change the style of hovered element
       if (id != store.getters.hoverCharacterID) {
         store.dispatch("updateHoverCharacterID", id);
         this.$refs["ch" + id][0].dark = true;
@@ -101,19 +104,23 @@ export default {
       this.onCharacterPanel = true;
     },
     leaveHover(id) {
+      // whenever leave hover, we unset the id
+      // and change back the style
       store.dispatch("updateHoverCharacterID", -1);
       this.onCharacterPanel = false;
       this.$refs["ch" + id][0].dark = false;
     },
     updateMouseSelect(id) {
+      // once we select a character, we disable all other elements
       if (this.mouseSelectedCharacterID == -1) {
         store.dispatch("updateMouseSelectedCharacterID", id);
       } else {
         store.dispatch("updateMouseSelectedCharacterID", -1);
       }
     },
-    // sort characters based on number of appearances
+
     sort_characters(obj) {
+      // sort characters based on number of appearances
       var items = Object.keys(obj).map(function (key) {
         obj[key]["id"] = key;
         return obj[key];
@@ -139,6 +146,7 @@ export default {
       return items;
     },
     newSearch(val) {
+      // whenever we push that button, it is the equivalent to do a new search
       if (val != null && val != store.getters.selectedCharacterName) {
         store.dispatch("selectCharacter", val);
         store.dispatch("updateCharacterInfos");
@@ -167,6 +175,7 @@ export default {
   },
   watch: {
     stage(newStage) {
+      // whenever the stage is changed, we have a new character list
       if (newStage == "FINISHED") {
         // search complete, we can start appending data
         this.characters = this.sort_characters(
@@ -176,6 +185,7 @@ export default {
       }
     },
     hoverCharacterID(id, oldID) {
+      // whenever hovered onto character, change styles etc
       if (id != -1 && !this.onCharacterPanel) {
         this.leftPane.scrollTop =
           this.$refs[id][0].offsetTop - this.leftPane.clientHeight / 1.5;
