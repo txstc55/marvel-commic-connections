@@ -189,7 +189,7 @@ for character in characterInfos:
         if character_appearance[cid] > maximum:
             maximum = character_appearance[cid]
             maximum_id = cid
-    name = characterIDToName[cid]
+    name = characterIDToName[maximum_id]
     if maximum_id != currentid:
         characterInfos[character]["closest_character"] = maximum_id
         characterInfos[name]["relatives"] += 1
