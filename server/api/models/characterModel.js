@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const characterSchema = new Schema(
     {
@@ -7,7 +7,7 @@ const characterSchema = new Schema(
             type: String,
             required: "Character needs a name"
         },
-        _id:{
+        _id: {
             type: Number,
             required: "Character needs an id"
         },
@@ -15,9 +15,17 @@ const characterSchema = new Schema(
             type: String,
             default: 'characters/'
         },
-        comic_ids:[]
+        comic_ids: [],
+        relatives: {
+            type: Number,
+            default: 0,
+        },
+        closest_character: {
+            type: Number,
+            default: 0,
+        }
     },
-    {collection: 'characters'}
+    { collection: 'characters' }
 );
 
 module.exports = mongoose.model("characters", characterSchema);
