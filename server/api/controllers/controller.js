@@ -5,6 +5,7 @@ const authors = mongoose.model('authors');
 const metadata = mongoose.model('metadata')
 
 exports.list_all_characters = async (_, res) => {
+    // return all the id and character names
     return await characters.find({}, { _id: 1, character_name: 1 }, (err, allCharacters) => {
         if (err) res.send(err);
         res.json(allCharacters);
@@ -12,6 +13,7 @@ exports.list_all_characters = async (_, res) => {
 };
 
 exports.get_query_count = async (_, res) => {
+    // get how many searches we got
     return await metadata.find({ _id: 0 }, (err, result) => {
         if (err) res.send(err);
         res.json(result);
@@ -19,6 +21,7 @@ exports.get_query_count = async (_, res) => {
 }
 
 exports.list_all_comics = async (_, res) => {
+    // list all comics
     return await comics.find({}, (err, allComics) => {
         if (err) res.send(err);
         res.json(allComics);
@@ -26,6 +29,7 @@ exports.list_all_comics = async (_, res) => {
 };
 
 exports.list_all_authors = async (_, res) => {
+    // list all authors
     return await authors.find({}, (err, allAuthors) => {
         if (err) res.send(err);
         res.json(allAuthors);
@@ -33,6 +37,7 @@ exports.list_all_authors = async (_, res) => {
 };
 
 async function get_one_character_info(id) {
+    // get one character's information
     chid = id;
     return await characters.findById(chid)
         .then(data => {
@@ -49,6 +54,7 @@ async function get_one_character_info(id) {
 }
 
 async function get_one_comic_info(id) {
+    // get one comic's information
     cmid = id;
     return await comics.findById(cmid)
         .then(data => {
@@ -117,7 +123,7 @@ exports.show_one_character = async (req, res) => {
 
                 // get all the connected characters
                 characterItems = await characterIDs.map(async id => {
-                    return await get_one_character_info(id).then(data => { return { "name": data.character_name, "url": data.url, "id": id } });
+                    return await get_one_character_info(id).then(data => { return { "name": data.character_name, "url": data.url, "id": id, "comic_count": data.comic_ids.length } });
                 })
                 result["connected_characters"] = await Promise.all(characterItems);
 
@@ -128,7 +134,7 @@ exports.show_one_character = async (req, res) => {
                 result["authors"] = await Promise.all(authorItems);
 
                 res.send(result);
-                console.log(characterID,": ", result["character"]["name"]);
+                console.log(characterID, ": ", result["character"]["name"]);
                 metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
                     // console.log(err, brote);
                 });
