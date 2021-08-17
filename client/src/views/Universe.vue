@@ -69,7 +69,9 @@ export default {
         if (size > maximumSize) {
           maximumSize = size;
         }
-        this.links.push({ sid: key, tid: value.closest_character });
+        for (const cid of value.closest_characters) {
+          this.links.push({ sid: key, tid: cid });
+        }
       }
       // for (var i = 1; i <= maximumSize + 1; i++) {
       //   this.createCSSSelector(".txt" + i, "font-size:" + i + "px;");

@@ -77,7 +77,7 @@ export default new Vuex.Store({
           const data = response.data;
           var network = {};
           for (const item of data) {
-            network[item._id] = { "name": item.character_name, "relatives": item.relatives, "closest_character": item.closest_character };
+            network[item._id] = { "name": item.character_name, "relatives": item.relatives, "closest_characters": item.closest_characters };
           }
           context.commit("SET_NETWORK", network);
           console.log("NETWORK LOADED");
