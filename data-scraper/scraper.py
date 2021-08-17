@@ -190,8 +190,17 @@ for character in characterInfos:
             maximum = character_appearance[cid]
             maximum_ids = [cid]
         elif character_appearance[cid] == maximum:
-            maximum_ids.append(cid)
-    
+            oldname = characterIDToName[maximum_ids[0]]
+            newname = characterIDToName[cid]
+            new_comic_count = len(
+                list(set(characterInfos[newname]["comicIDs"])))
+            old_comic_count = len(
+                list(set(characterInfos[oldname]["comicIDs"])))
+            if (new_comic_count > old_comic_count):
+                maximum_ids = [cid]
+            elif (new_comic_count == old_comic_count):
+                maximum_ids.append(cid)
+
     for maximum_id in maximum_ids:
         name = characterIDToName[maximum_id]
         if maximum_id != currentid:
