@@ -14,7 +14,7 @@ exports.list_all_characters = async (_, res) => {
 
 exports.list_all_characters_with_relatives = async (_, res) => {
     // return all the id and character names
-    return await characters.find({}, { _id: 1, character_name: 1, relatives: 1, closest_character: 1 }, (err, allCharacters) => {
+    return await characters.find({}, { _id: 1, character_name: 1, relatives: 1, closest_characters: 1 }, (err, allCharacters) => {
         if (err) res.send(err);
         res.json(allCharacters);
     });
@@ -47,7 +47,7 @@ exports.list_all_authors = async (_, res) => {
 async function get_one_character_info(id) {
     // get one character's information
     chid = id;
-    return await characters.findById(chid).select({ relatives: 0, closest_character: 0 })
+    return await characters.findById(chid).select({ relatives: 0, closest_characters: 0 })
         .then(data => {
             if (!data) {
                 return null;

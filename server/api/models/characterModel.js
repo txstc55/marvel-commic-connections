@@ -20,10 +20,7 @@ const characterSchema = new Schema(
             type: Number,
             default: 0,
         },
-        closest_character: {
-            type: Number,
-            default: 0,
-        }
+        closest_characters: [],
     },
     { collection: 'characters' }
 );

@@ -165,7 +165,7 @@ characterIDToName = {}  # record the id to name info
 for character in characterInfos:
     characterIDToName[characterInfos[character]["id"]] = character
     characterInfos[character]["relatives"] = 0
-    characterInfos[character]["closest_character"] = characterInfos[character]["id"]
+    characterInfos[character]["closest_characters"] = []
 
 for character in characterInfos:
     # get the list of comics
@@ -184,21 +184,25 @@ for character in characterInfos:
                     character_appearance[characterid] += 1
     # find the most appearing id
     maximum = -1
-    maximum_id = currentid
+    maximum_ids = [currentid]
     for cid in character_appearance:
         if character_appearance[cid] > maximum:
             maximum = character_appearance[cid]
-            maximum_id = cid
-    name = characterIDToName[maximum_id]
-    if maximum_id != currentid:
-        characterInfos[character]["closest_character"] = maximum_id
-        characterInfos[name]["relatives"] += 1
+            maximum_ids = [cid]
+        elif character_appearance[cid] == maximum:
+            maximum_ids.append(cid)
+    
+    for maximum_id in maximum_ids:
+        name = characterIDToName[maximum_id]
+        if maximum_id != currentid:
+            characterInfos[character]["closest_characters"].append(maximum_id)
+            characterInfos[name]["relatives"] += 1
 
 
 for character in characterInfos:
     # we want to see what is the most
     characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "relatives": characterInfos[character]["relatives"],
-                     "closest_character": characterInfos[character]["closest_character"], "url": characterInfos[character]["url"], "comic_ids": list(set(characterInfos[character]["comicIDs"]))}
+                     "closest_characters": characterInfos[character]["closest_characters"], "url": characterInfos[character]["url"], "comic_ids": list(set(characterInfos[character]["comicIDs"]))}
     characterCollections.insert_one(characterItem)
 
 
