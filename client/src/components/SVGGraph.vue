@@ -488,23 +488,5 @@ export default {
 </script>
 
 <style scoped>
-svg {
-  /* background-color: cyan; */
-  /* height: 80vh; */
-  display: block;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  /* text-rendering: optimizeSpeed; */
-  /* shape-rendering: optimizeSpeed; */
-  /* margin-top: 5px; */
-  /* width: 100%; */
-  /* position: absolute; */
-  /* top:0;
-    left:0; */
-  overflow: hidden;
-}
+
 </style>

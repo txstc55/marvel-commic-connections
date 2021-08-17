@@ -22,6 +22,8 @@ export default new Vuex.Store({
     mouseSelectedCharacterID: -1, // what character ID we are selecting
     initialLoad: false, // have we finished the initial loading of characters
     queryCount: "",
+    networkLoaded: false,
+    network: {},
   },
   mutations: {
     SET_SELECTED_CHARACTER_NAME(state, name) {
@@ -59,9 +61,32 @@ export default new Vuex.Store({
     },
     SET_QUERY_COUNT(state, count) {
       state.queryCount = count;
+    },
+    SET_NETWORK_LOADED(state, bool) {
+      state.networkLoaded = bool;
+    },
+    SET_NETWORK(state, network) {
+      state.network = network
     }
   },
   actions: {
+    getNetwork(context) {
+      if (!this.state.networkLoaded) {
+        context.commit("SET_NETWORK_LOADED", false);
+        axios.get(api_url + "relatives").then(response => {
+          const data = response.data;
+          var network = {};
+          for (const item of data) {
+            network[item._id] = { "name": item.character_name, "relatives": item.relatives, "closest_character": item.closest_character };
+          }
+          context.commit("SET_NETWORK", network);
+          console.log("NETWORK LOADED");
+          context.commit("SET_NETWORK_LOADED", true);
+        }).catch(e => {
+          console.log("LOADING NETWORK ERROR: ", e);
+        })
+      }
+    },
     getQueryCount(context) {
       axios.get(api_url + "count").then(response => {
         context.commit("SET_QUERY_COUNT", response.data[0].query_count)
@@ -163,5 +188,7 @@ export default new Vuex.Store({
     oneComicInfo: state => id => state.comicInfos[id],
     initialLoad: state => state.initialLoad,
     queryCount: state => state.queryCount,
+    networkLoaded: state => state.networkLoaded,
+    network: state => state.network,
   }
 })
