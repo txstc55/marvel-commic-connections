@@ -160,13 +160,49 @@ mydb = myclient["marvel"]
 characterCollections = mydb["characters"]
 characterCollections.drop()
 characterCollections = mydb["characters"]
+characterIDToName = {}  # record the id to name info
+
 for character in characterInfos:
-    characterItem = {"_id": characterInfos[character]["id"], "character_name": character,
-                     "url": characterInfos[character]["url"], "comic_ids": list(set(characterInfos[character]["comicIDs"]))}
+    characterIDToName[characterInfos[character]["id"]] = character
+    characterInfos[character]["relatives"] = 0
+    characterInfos[character]["closest_character"] = characterInfos[character]["id"]
+
+for character in characterInfos:
+    # get the list of comics
+    comics = list(set(characterInfos[character]["comicIDs"]))
+    currentid = characterInfos[character]["id"]  # we want to exclude itself
+    character_appearance = {}
+    for comic in comicInfos:
+        if comicInfos[comic]["id"] in comics:
+            # get all the character ids
+            tmplist = list(set(comicInfos[comic]["characterIDs"]))
+            # for each character, we want to check how many appearance it has
+            for characterid in tmplist:
+                if characterid != currentid:
+                    if not characterid in character_appearance:
+                        character_appearance[characterid] = 0
+                    character_appearance[characterid] += 1
+    # find the most appearing id
+    maximum = -1
+    maximum_id = currentid
+    for cid in character_appearance:
+        if character_appearance[cid] > maximum:
+            maximum = character_appearance[cid]
+            maximum_id = cid
+    name = characterIDToName[cid]
+    characterInfos[character]["closest_character"] = maximum_id
+    characterInfos[name]["relatives"] += 1
+
+
+for character in characterInfos:
+    # we want to see what is the most
+    characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "relatives": characterInfos[character]["relatives"],
+                     "closest_character": characterInfos[character]["closest_character"], "url": characterInfos[character]["url"], "comic_ids": list(set(characterInfos[character]["comicIDs"]))}
     characterCollections.insert_one(characterItem)
 
-author_comic_count = {}
 
+# record for each author, how many comics he takes part in
+author_comic_count = {}
 comicCollections = mydb["comics"]
 comicCollections.drop()
 comicCollections = mydb["comics"]
