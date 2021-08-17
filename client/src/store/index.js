@@ -70,19 +70,21 @@ export default new Vuex.Store({
       })
     },
     getCharacterNameAndID(context) {
-      context.commit("SET_INITIAL_LOAD", false);
-      axios.get(api_url + "characters").then(response => {
-        const data = response.data;
-        var result = {};
-        for (const item of data) {
-          result[item.character_name] = item._id
-        }
-        // console.log(result);
-        context.commit("SET_CHARACTER_NAME_AND_ID", result);
-        context.commit("SET_INITIAL_LOAD", true);
-      }).catch(e => {
-        console.log("ERROR: ", e);
-      })
+      if (!this.state.initialLoad) {
+        context.commit("SET_INITIAL_LOAD", false);
+        axios.get(api_url + "characters").then(response => {
+          const data = response.data;
+          var result = {};
+          for (const item of data) {
+            result[item.character_name] = item._id
+          }
+          // console.log(result);
+          context.commit("SET_CHARACTER_NAME_AND_ID", result);
+          context.commit("SET_INITIAL_LOAD", true);
+        }).catch(e => {
+          console.log("ERROR: ", e);
+        })
+      }
     },
     selectCharacter(context, name) {
       var id = -1;
@@ -104,7 +106,7 @@ export default new Vuex.Store({
           const authors = response.data.authors;
           const ccInfos = {};
           for (const item of connected_characters) {
-            ccInfos[item.id] = { "name": item.name, "url": item.url, "comics": [] ,"comic_count": item.comic_count}
+            ccInfos[item.id] = { "name": item.name, "url": item.url, "comics": [], "comic_count": item.comic_count }
           }
           var comicInfos = {};
           for (const item of comics) {

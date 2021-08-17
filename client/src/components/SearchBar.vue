@@ -93,6 +93,16 @@ export default {
   },
   created() {},
   mounted() {
+    if (this.initialLoad) {
+      this.allCharacterNames = store.getters.allCharacterNames;
+      console.log("Loaded completed once: " + this.allCharacterNames.length + " characters");
+      this.selectedCharacter =
+        this.allCharacterNames[
+          Math.floor(Math.random() * this.allCharacterNames.length)
+        ];
+      this.search = this.selectedCharacter;
+      this.querySelection(this.search);
+    }
   },
 };
 </script>
