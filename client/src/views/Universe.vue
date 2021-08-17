@@ -22,9 +22,16 @@ export default {
       nodes: [],
       links: [],
       options: {
-        force: 300,
+        force: 1000,
         nodeLabels: true,
         linkWidth: 2,
+        forces: {
+          Center: true,
+          X: 1,
+          Y: 1,
+          ManyBody: true,
+          Link: true,
+        },
         // size:{ w:600, h:600},
       },
     };
