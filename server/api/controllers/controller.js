@@ -39,7 +39,7 @@ exports.list_all_authors = async (_, res) => {
 async function get_one_character_info(id) {
     // get one character's information
     chid = id;
-    return await characters.findById(chid)
+    return await characters.findById(chid).select({ relatives: 0, closest_character: 0 })
         .then(data => {
             if (!data) {
                 return null;
