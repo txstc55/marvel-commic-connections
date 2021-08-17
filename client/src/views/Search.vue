@@ -2,9 +2,7 @@
   <div id="pageContainer">
     <SearchBar />
     <div id="container">
-      <div class="pane" id="left">
-        <CharacterList />
-      </div>
+      <CharacterList />
 
       <div class="pane">
         <SVGGraph />
@@ -53,6 +51,7 @@ export default {
       return store.getters.selectedCharacterName;
     },
   },
+  watch: {},
   mounted() {
     store.dispatch("getCharacterNameAndID");
     store.dispatch("getQueryCount");
