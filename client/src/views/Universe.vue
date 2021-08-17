@@ -11,10 +11,12 @@
 /<script>
 import D3Network from "vue-d3-network";
 import store from "../store"; // import store
+// import panZoom from "vue-panzoom";
 export default {
   name: "Universe",
   components: {
     D3Network,
+    // panZoom,
   },
   data() {
     return {
@@ -41,8 +43,7 @@ export default {
         { sid: 7, tid: 9 },
       ],
       options: {
-        force: 100,
-        nodeSize: 5,
+        force: 200,
         nodeLabels: true,
         linkWidth: 5,
         // size:{ w:600, h:600},
@@ -62,7 +63,11 @@ export default {
         this.nodes = [];
         this.links = [];
         for (const [key, value] of Object.entries(network)) {
-          this.nodes.push({ id: key, name: value.name, _size: Math.log2(value.relatives + 10) + 5 });
+          this.nodes.push({
+            id: key,
+            name: value.name,
+            _size: Math.log2(value.relatives + 2)  * 5 ,
+          });
           this.links.push({ sid: key, tid: value.closest_character });
         }
       }
