@@ -2,10 +2,10 @@
   <v-app>
     <div id="nav">
       <router-link to="/">Search</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/universe">Universe</router-link>
+      <router-link to="/universe">Universe</router-link> |
+      <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </v-app>
 </template>
 

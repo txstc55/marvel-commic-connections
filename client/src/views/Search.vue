@@ -122,5 +122,6 @@ svg {
   /* top:0;
     left:0; */
   overflow: hidden;
+  text-rendering: optimizeSpeed;
 }
 </style>
