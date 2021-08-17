@@ -12,6 +12,14 @@ exports.list_all_characters = async (_, res) => {
     });
 };
 
+exports.list_all_characters_with_relatives = async (_, res) => {
+    // return all the id and character names
+    return await characters.find({}, { _id: 1, character_name: 1, relatives: 1, closest_character: 1 }, (err, allCharacters) => {
+        if (err) res.send(err);
+        res.json(allCharacters);
+    });
+};
+
 exports.get_query_count = async (_, res) => {
     // get how many searches we got
     return await metadata.find({ _id: 0 }, (err, result) => {

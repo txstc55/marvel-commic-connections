@@ -23,5 +23,8 @@ module.exports = app => {
         .route('/count')
         .get(controllers.get_query_count)
         .post()
-
+    app
+        .route('/relatives')
+        .get(controllers.list_all_characters_with_relatives)
+        .post()
 };
