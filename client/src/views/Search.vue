@@ -52,7 +52,8 @@ export default {
     },
   },
   watch: {},
-  mounted() {
+  mounted() {},
+  created() {
     store.dispatch("getCharacterNameAndID");
     store.dispatch("getQueryCount");
   },
