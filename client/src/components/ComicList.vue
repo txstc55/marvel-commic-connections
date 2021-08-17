@@ -26,6 +26,10 @@
                 selectedCharacterName +
                 ' in ' +
                 currentCharacter.comics.length +
+                ' comics, ' +
+                currentCharacter.name +
+                ' appeared in ' +
+                currentCharacter.comic_count +
                 ' comics')
           "
         ></p>

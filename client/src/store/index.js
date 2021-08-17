@@ -104,7 +104,7 @@ export default new Vuex.Store({
           const authors = response.data.authors;
           const ccInfos = {};
           for (const item of connected_characters) {
-            ccInfos[item.id] = { "name": item.name, "url": item.url, "comics": [] }
+            ccInfos[item.id] = { "name": item.name, "url": item.url, "comics": [] ,"comic_count": item.comic_count}
           }
           var comicInfos = {};
           for (const item of comics) {
