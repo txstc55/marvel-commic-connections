@@ -13,7 +13,7 @@
     <v-row dense v-else>
       <v-col cols="12" dense>
         <p
-          class="text-h6"
+          class="text-h5"
           v-text="
             currentCharacter.name +
             (currentCharacter.id == selectedCharacterID

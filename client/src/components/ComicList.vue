@@ -13,7 +13,7 @@
     <v-row dense v-else>
       <v-col cols="12" dense>
         <p
-          class="text-h6"
+          class="text-h5"
           v-text="
             currentCharacter.name +
             (currentCharacter.id == selectedCharacterID
@@ -26,11 +26,18 @@
                 selectedCharacterName +
                 ' in ' +
                 currentCharacter.comics.length +
-                ' comics, ' +
-                currentCharacter.name +
+                ' comics')
+          "
+        ></p>
+        <p
+          class="text-h6"
+          v-text="
+            currentCharacter.id == selectedCharacterID
+              ? ''
+              : currentCharacter.name +
                 ' appeared in ' +
                 currentCharacter.comic_count +
-                ' comics')
+                ' comics'
           "
         ></p>
       </v-col>
