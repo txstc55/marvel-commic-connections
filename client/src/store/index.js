@@ -97,77 +97,18 @@ export default new Vuex.Store({
     },
     getCreatorNetwork(context) {
       if (!this.state.creatorNetworkLoaded) {
-        console.log("load comic creators")
         context.commit("SET_CREATOR_NETWORK_LOADED", false);
-        axios.get(api_url + "comic_authors").then(response => {
-          console.log("get comic creator data");
-          const comic_creator_data = response.data;
-          var author_collaborators = {} // this will record the number of collaborations
-          for (const item of comic_creator_data) {
-            const creators = item.author_ids;
-            for (const cid of creators) {
-              if (!(cid in author_collaborators)) {
-                author_collaborators[cid] = {}
-              }
-              for (const nid of creators) {
-                // author_collaborators[cid][cid] will give us the number
-                // of comics this creator participates in
-                if (!(nid in author_collaborators[cid])) {
-                  author_collaborators[cid][nid] = 0;
-                }
-                author_collaborators[cid][nid] += 1;
-              }
-            }
+        axios.get(api_url + "collaborators").then(response => {
+          const data = response.data;
+          var network = {};
+          for (const item of data) {
+            network[item._id] = { "name": item.author_name, "relatives": item.relatives, "closest_authors": item.closest_authors };
           }
-          console.log("creator pre-processing finished");
-          axios.get(api_url + "authors_light").then(author_response => {
-            console.log("get author light data")
-            const author_data = author_response.data;
-            var network = {}
-            for (const item of author_data) {
-              // hold data
-              network[item._id] = { "name": item.author_name, "relatives": 0, "closest_authors": [] };
-            }
-            for (const [key, value] of Object.entries(author_collaborators)) {
-              var closest_authors = [];
-              var maximum_collaborations = -1;
-              for (const [cid, count] of Object.entries(value)) {
-                if (cid != key) {
-                  // we want to exclude itself
-                  if (count > maximum_collaborations) {
-                    // if has more collaborations
-                    closest_authors = [cid];
-                    maximum_collaborations = count;
-                  } else if (count == maximum_collaborations) {
-                    // if number of collaborations is equal
-                    // we want to check the total number of works
-                    // if it has more, then replace
-                    // otherwise, join the list
-                    const total_work = author_collaborators[cid][cid];
-                    const other_total_work = author_collaborators[closest_authors[0]][closest_authors[0]];
-                    if (total_work > other_total_work) {
-                      closest_authors = [cid];
-                    } else if (total_work == other_total_work) {
-                      closest_authors.push(cid);
-                    }
-                  }
-                }
-              }
-              network[key].closest_authors = closest_authors;
-              for (const cid of closest_authors) {
-                // add the relatives
-                network[cid].relatives += 1;
-              }
-            }
-            console.log("CREATOR NETWORK LOADED");
-            console.log(network);
-            context.commit("SET_CREATOR_NETWORK", network);
-            context.commit("SET_CREATOR_NETWORK_LOADED", true);
-          }).catch(e => {
-            console.log("LOADING CREATOR LIGHT ERROR: ", e)
-          })
-        }).catch(er => {
-          console.log("LOADING COMIC CREATORS ERROR: ", er);
+          context.commit("SET_CREATOR_NETWORK", network);
+          console.log("CREATOR NETWORK LOADED");
+          context.commit("SET_CREATOR_NETWORK_LOADED", true);
+        }).catch(e => {
+          console.log("LOADING CREATOR NETWORK ERROR: ", e);
         })
       }
     },
