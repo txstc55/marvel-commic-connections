@@ -9,6 +9,8 @@ exports.list_all_characters = async (_, res) => {
     return await characters.find({}, { _id: 1, character_name: 1 }, (err, allCharacters) => {
         if (err) res.send(err);
         res.json(allCharacters);
+        res.end();
+        res.connection.end();
     });
 };
 
@@ -17,6 +19,8 @@ exports.list_all_characters_with_relatives = async (_, res) => {
     return await characters.find({}, { _id: 1, character_name: 1, relatives: 1, closest_characters: 1 }, (err, allCharacters) => {
         if (err) res.send(err);
         res.json(allCharacters);
+        res.end();
+        res.connection.end();
     });
 };
 
@@ -26,6 +30,8 @@ exports.list_all_comic_authors = async (_, res) => {
         if (err) res.send(err);
         res.json(allComics);
         console.log("all comic authors sent:", allComics.length);
+        res.end();
+        res.connection.end();
     });
 };
 
@@ -33,6 +39,8 @@ exports.list_all_authors_light = async (_, res) => {
     return await authors.find({}, { author_name: 1, _id: 1 }, (err, result) => {
         if (err) res.send(err);
         res.json(result);
+        res.end();
+        res.connection.end();
     })
 }
 
@@ -41,6 +49,8 @@ exports.get_query_count = async (_, res) => {
     return await metadata.find({ _id: 0 }, (err, result) => {
         if (err) res.send(err);
         res.json(result);
+        res.end();
+        res.connection.end();
     })
 }
 
@@ -57,6 +67,8 @@ exports.list_all_authors = async (_, res) => {
     return await authors.find({}, (err, allAuthors) => {
         if (err) res.send(err);
         res.json(allAuthors);
+        res.end();
+        res.connection.end();
     });
 };
 
@@ -162,6 +174,8 @@ exports.show_one_character = async (req, res) => {
                 metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
                     // console.log(err, brote);
                 });
+                res.end();
+                res.connection.end();
             }
         })
         .catch(err => {
