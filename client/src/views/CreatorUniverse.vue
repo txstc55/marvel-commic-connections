@@ -440,6 +440,36 @@ export default {
 .txt60 {
   font-size: 60px;
 }
+.txt61 {
+  font-size: 61px;
+}
+.txt62 {
+  font-size: 62px;
+}
+.txt63 {
+  font-size: 63px;
+}
+.txt64 {
+  font-size: 64px;
+}
+.txt65 {
+  font-size: 65px;
+}
+.txt66 {
+  font-size: 66px;
+}
+.txt67 {
+  font-size: 67px;
+}
+.txt68 {
+  font-size: 68px;
+}
+.txt69 {
+  font-size: 69px;
+}
+.txt70 {
+  font-size: 70px;
+}
 .txt71 {
   font-size: 71px;
 }
