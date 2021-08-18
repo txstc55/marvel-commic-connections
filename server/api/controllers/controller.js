@@ -25,7 +25,7 @@ exports.list_all_comic_authors = async (_, res) => {
     return await comics.find({}, { author_ids: 1, _id: 0 }, (err, allComics) => {
         if (err) res.send(err);
         res.json(allComics);
-        console.log("all comic authors sent");
+        console.log("all comic authors sent:", allComics.length);
     });
 };
 
