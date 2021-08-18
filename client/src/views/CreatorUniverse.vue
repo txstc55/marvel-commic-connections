@@ -191,6 +191,9 @@ export default {
     circleCollection() {
       return document.getElementsByTagName("circle");
     },
+    api_url() {
+      return store.getters.api_url;
+    },
   },
   watch: {
     hoverID(newid, oldid) {
@@ -206,6 +209,11 @@ export default {
         this.createNodes();
       }
     },
+    api_url(val) {
+      if (val != "") {
+        store.dispatch("getCreatorNetwork");
+      }
+    },
   },
   mounted() {
     if (this.creatorNetworkLoaded) {
@@ -213,7 +221,10 @@ export default {
     }
   },
   created() {
-    store.dispatch("getCreatorNetwork");
+    store.dispatch("getApiUrl");
+    if (this.api_url!=""){
+      store.dispatch("getCreatorNetwork");
+    }
   },
 };
 </script>

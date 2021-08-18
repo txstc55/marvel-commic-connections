@@ -50,12 +50,25 @@ export default {
     selectedCharacterName() {
       return store.getters.selectedCharacterName;
     },
+    api_url() {
+      return store.getters.api_url;
+    },
   },
-  watch: {},
+  watch: {
+    api_url(val) {
+      if (val != "") {
+        store.dispatch("getCharacterNameAndID");
+        store.dispatch("getQueryCount");
+      }
+    },
+  },
   mounted() {},
   created() {
-    store.dispatch("getCharacterNameAndID");
-    store.dispatch("getQueryCount");
+    store.dispatch("getApiUrl");
+    if (this.api_url != "") {
+      store.dispatch("getCharacterNameAndID");
+      store.dispatch("getQueryCount");
+    }
   },
 };
 </script>

@@ -3,13 +3,14 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 const port = process.env.PORT || 5000; // the port we will be using
-const api_url = "http://134.209.65.198:" + port + "/"
-// const api_url = "https://localhost:" + port + "/"
+
+// const this.state.api_url = "https://localhost:" + port + "/"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    api_url: "",
     characterNameAndID: {},
     selectedCharacterName: "", // the character name we are queing
     selectedCharacterID: -1, // the character id we are queing
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     creatorNetworkLoaded: false,
   },
   mutations: {
+    SET_API_URL(state, url) {
+      state.api_url = url;
+    },
     SET_SELECTED_CHARACTER_NAME(state, name) {
       state.selectedCharacterName = name;
     },
@@ -78,10 +82,21 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    getApiUrl(context) {
+      if (this.state.api_url == "") {
+        axios.get("https://api.userinfo.io/userinfos").then(response => {
+          if (response.data.country.name == "China") {
+            context.commit("SET_API_URL", "http://118.25.3.47:" + port + "/")
+          } else {
+            context.commit("SET_API_URL", "http://134.209.65.198:" + port + "/")
+          }
+        })
+      }
+    },
     getNetwork(context) {
       if (!this.state.networkLoaded) {
         context.commit("SET_NETWORK_LOADED", false);
-        axios.get(api_url + "relatives").then(response => {
+        axios.get(this.state.api_url + "relatives").then(response => {
           const data = response.data;
           var network = {};
           for (const item of data) {
@@ -98,7 +113,7 @@ export default new Vuex.Store({
     getCreatorNetwork(context) {
       if (!this.state.creatorNetworkLoaded) {
         context.commit("SET_CREATOR_NETWORK_LOADED", false);
-        axios.get(api_url + "collaborators").then(response => {
+        axios.get(this.state.api_url + "collaborators").then(response => {
           const data = response.data;
           var network = {};
           for (const item of data) {
@@ -113,7 +128,7 @@ export default new Vuex.Store({
       }
     },
     getQueryCount(context) {
-      axios.get(api_url + "count").then(response => {
+      axios.get(this.state.api_url + "count").then(response => {
         context.commit("SET_QUERY_COUNT", response.data[0].query_count)
       }).catch(e => {
         console.log("ERROR: ", e);
@@ -122,7 +137,7 @@ export default new Vuex.Store({
     getCharacterNameAndID(context) {
       if (!this.state.initialLoad) {
         context.commit("SET_INITIAL_LOAD", false);
-        axios.get(api_url + "characters").then(response => {
+        axios.get(this.state.api_url + "characters").then(response => {
           const data = response.data;
           var result = {};
           for (const item of data) {
@@ -149,7 +164,7 @@ export default new Vuex.Store({
       context.commit("SET_STAGE", "PREPARING")
       if (this.state.selectedCharacterID >= 0 && this.state.selectedCharacterID < Object.keys(this.state.characterNameAndID).length) {
         context.commit("SET_STAGE", "SENT")
-        axios.get(api_url + "characters/" + this.state.selectedCharacterID).then(response => {
+        axios.get(this.state.api_url + "characters/" + this.state.selectedCharacterID).then(response => {
           context.commit("SET_SELECTED_CHARACTER_INFOS", response.data.character);
           const comics = response.data.comics;
           const connected_characters = response.data.connected_characters;
@@ -217,5 +232,6 @@ export default new Vuex.Store({
     network: state => state.network,
     creatorNetworkLoaded: state => state.creatorNetworkLoaded,
     creatorNetwork: state => state.creatorNetwork,
+    api_url: state => state.api_url,
   }
 })
