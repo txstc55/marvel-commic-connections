@@ -1,11 +1,25 @@
 <template>
-  <d3-network
-    :net-nodes="nodes"
-    :net-links="links"
-    :options="options"
-    id="universeContainer"
-  >
-  </d3-network>
+  <v-row v-if="!creatorNetworkLoaded" id="universeContainer">
+    <v-col cols="12" class="mt-12">
+      <div class="text-center">
+        <h2>Loading all author and comic infos is gonna take a while</h2>
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          class="mt-12"
+        ></v-progress-circular>
+      </div>
+    </v-col>
+  </v-row>
+  <v-row v-else>
+    <d3-network
+      :net-nodes="nodes"
+      :net-links="links"
+      :options="options"
+      id="universeContainer"
+    >
+    </d3-network>
+  </v-row>
 </template>
 /<script>
 import D3Network from "vue-d3-network";
@@ -65,7 +79,7 @@ export default {
     createNodes() {
       var maximumSize = -1;
       // load the network from store
-      const network = store.getters.network;
+      const network = store.getters.creatorNetwork;
       this.nodes = [];
       this.links = [];
       // we need to store for each node, what are the edges coming in
@@ -86,13 +100,13 @@ export default {
           name: value.name,
           _size: size,
           _color: "red",
-          _labelClass: "txt40",
+          _labelClass: "txt60",
         });
-        // fix maximum size as 40
+        // fix maximum size as 60
         if (size > maximumSize) {
           maximumSize = size;
         }
-        for (const cid of value.closest_characters) {
+        for (const cid of value.closest_authors) {
           // add the link
           this.links.push({ sid: key, tid: cid });
           // also record it since we will need it later
@@ -111,7 +125,7 @@ export default {
         this.neighborEdges[node.id].scale = node._size / maximumSize;
         // size up a bit
         node._size = Math.pow(node._size, 1.2);
-        if (Math.floor(node._size) <= 40) {
+        if (Math.floor(node._size) <= 60) {
           // set the text label class
           node._labelClass = "txt" + Math.floor(node._size);
         }
@@ -172,8 +186,8 @@ export default {
   },
 
   computed: {
-    networkLoaded() {
-      return store.getters.networkLoaded;
+    creatorNetworkLoaded() {
+      return store.getters.creatorNetworkLoaded;
     },
     circleCollection() {
       return document.getElementsByTagName("circle");
@@ -188,7 +202,7 @@ export default {
         this.highlightNodes(newid);
       }
     },
-    networkLoaded(val) {
+    creatorNetworkLoaded(val) {
       if (val) {
         this.createNodes();
       }
@@ -201,12 +215,12 @@ export default {
     },
   },
   mounted() {
-    if (this.networkLoaded) {
+    if (this.creatorNetworkLoaded) {
       this.createNodes();
     }
   },
   created() {
-    store.dispatch("getNetwork");
+    store.dispatch("getCreatorNetwork");
   },
 };
 </script>
@@ -362,6 +376,66 @@ export default {
 }
 .txt40 {
   font-size: 40px;
+}
+.txt41 {
+  font-size: 41px;
+}
+.txt42 {
+  font-size: 42px;
+}
+.txt43 {
+  font-size: 43px;
+}
+.txt44 {
+  font-size: 44px;
+}
+.txt45 {
+  font-size: 45px;
+}
+.txt46 {
+  font-size: 46px;
+}
+.txt47 {
+  font-size: 47px;
+}
+.txt48 {
+  font-size: 48px;
+}
+.txt49 {
+  font-size: 49px;
+}
+.txt50 {
+  font-size: 50px;
+}
+.txt51 {
+  font-size: 51px;
+}
+.txt52 {
+  font-size: 52px;
+}
+.txt53 {
+  font-size: 53px;
+}
+.txt54 {
+  font-size: 54px;
+}
+.txt55 {
+  font-size: 55px;
+}
+.txt56 {
+  font-size: 56px;
+}
+.txt57 {
+  font-size: 57px;
+}
+.txt58 {
+  font-size: 58px;
+}
+.txt59 {
+  font-size: 59px;
+}
+.txt60 {
+  font-size: 60px;
 }
 </style>
 
