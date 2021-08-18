@@ -124,7 +124,6 @@ export default {
           circle.addEventListener("mouseenter", (event) => {
             const name = event.target.attributes.title.value;
             const id = me.nameToID[name];
-            console.log(name, id, me.neighborEdges[id]);
             me.hoverID = id;
           });
           circle.addEventListener("mouseleave", () => {
@@ -191,12 +190,6 @@ export default {
     networkLoaded(val) {
       if (val) {
         this.createNodes();
-      }
-    },
-    circleCollection(val) {
-      console.log(val);
-      if (val.length == this.nodes.length) {
-        console.log(val[0]);
       }
     },
   },
