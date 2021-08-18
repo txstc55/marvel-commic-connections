@@ -125,9 +125,9 @@ export default {
         this.neighborEdges[node.id].scale = node._size / maximumSize;
         // size up a bit
         node._size = Math.pow(node._size, 1.2);
-        if (Math.floor(node._size) <= 40) {
+        if (Math.floor(node._size) < 40) {
           // set the text label class
-          node._labelClass = "txt" + Math.floor(node._size);
+          node._labelClass = "txt" + Math.ceil(node._size);
         }
       }
       // this guarantees that the svg is rendered

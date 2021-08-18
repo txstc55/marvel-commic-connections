@@ -100,7 +100,7 @@ export default {
           name: value.name,
           _size: size,
           _color: "red",
-          _labelClass: "txt60",
+          _labelClass: "txt100",
         });
         // fix maximum size as 60
         if (size > maximumSize) {
@@ -124,10 +124,10 @@ export default {
         // we want to record the original size
         this.neighborEdges[node.id].scale = node._size / maximumSize;
         // size up a bit
-        node._size = Math.pow(node._size, 1.2);
-        if (Math.floor(node._size) <= 60) {
+        node._size = Math.pow(node._size, 1.4);
+        if (Math.floor(node._size) < 100) {
           // set the text label class
-          node._labelClass = "txt" + Math.floor(node._size);
+          node._labelClass = "txt" + Math.ceil(node._size);
         }
       }
       // this guarantees that the svg is rendered
@@ -222,7 +222,7 @@ export default {
   },
   created() {
     store.dispatch("getApiUrl");
-    if (this.api_url!=""){
+    if (this.api_url != "") {
       store.dispatch("getCreatorNetwork");
     }
   },
@@ -440,6 +440,96 @@ export default {
 }
 .txt60 {
   font-size: 60px;
+}
+.txt71 {
+  font-size: 71px;
+}
+.txt72 {
+  font-size: 72px;
+}
+.txt73 {
+  font-size: 73px;
+}
+.txt74 {
+  font-size: 74px;
+}
+.txt75 {
+  font-size: 75px;
+}
+.txt76 {
+  font-size: 76px;
+}
+.txt77 {
+  font-size: 77px;
+}
+.txt78 {
+  font-size: 78px;
+}
+.txt79 {
+  font-size: 79px;
+}
+.txt80 {
+  font-size: 80px;
+}
+.txt81 {
+  font-size: 81px;
+}
+.txt82 {
+  font-size: 82px;
+}
+.txt83 {
+  font-size: 83px;
+}
+.txt84 {
+  font-size: 84px;
+}
+.txt85 {
+  font-size: 85px;
+}
+.txt86 {
+  font-size: 86px;
+}
+.txt87 {
+  font-size: 87px;
+}
+.txt88 {
+  font-size: 88px;
+}
+.txt89 {
+  font-size: 89px;
+}
+.txt90 {
+  font-size: 90px;
+}
+.txt91 {
+  font-size: 91px;
+}
+.txt92 {
+  font-size: 92px;
+}
+.txt93 {
+  font-size: 93px;
+}
+.txt94 {
+  font-size: 94px;
+}
+.txt95 {
+  font-size: 95px;
+}
+.txt96 {
+  font-size: 96px;
+}
+.txt97 {
+  font-size: 97px;
+}
+.txt98 {
+  font-size: 98px;
+}
+.txt99 {
+  font-size: 99px;
+}
+.txt100 {
+  font-size: 100px;
 }
 </style>
 
