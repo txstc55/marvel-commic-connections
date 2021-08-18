@@ -232,9 +232,66 @@ for comic in comicInfos:
 authorCollections = mydb["authors"]
 authorCollections.drop()
 authorCollections = mydb["authors"]
+
+
+authorIDToURL = {}
+for item in authorInfos:
+    authorIDToURL[authorInfos[item]["id"]] = item
+
+author_collaborators = {} 
+for item in comicInfos:
+    creators = list(set(comicInfos[item]["authorIDs"]))
+    for cid in creators:
+        if not cid in author_collaborators:
+            author_collaborators[cid] = {}
+
+        for nid in creators:
+            ## author_collaborators[cid][cid] will give us the number
+            ## of comics this creator participates in
+            if not nid in author_collaborators[cid]:
+                author_collaborators[cid][nid] = 0
+
+            author_collaborators[cid][nid] += 1
+
+network={}
+for url in authorInfos:
+    authorInfos[url]["relatives"] = 0
+    authorInfos[url]["closest_authors"] = []
+
+for key in author_collaborators:
+    value = author_collaborators[key]
+    closest_authors = []
+    maximum_collaborations = -1
+
+    for cid in value:
+        count = value[cid]
+        if cid!=key:
+            ## we want to exclude itself
+            if count > maximum_collaborations:
+                ## if has more collaborations
+                ## replace
+                closest_authors = [cid]
+                maximum_collaborations=count
+            elif count == maximum_collaborations:
+                ## if number of collaborations is equal
+                ## we want to check the total number of works
+                ## if it has more, then replace
+                ## otherwise, join the list
+                total_work = author_collaborators[cid][cid]
+                other_total_work=author_collaborators[closest_authors[0]][closest_authors[0]]
+                if total_work > other_total_work:
+                    closest_authors = [cid]
+                elif total_work == other_total_work:
+                    closest_authors.append(cid)
+    authorInfos[authorIDToURL[key]]["closest_authors"] = closest_authors
+    for cid in closest_authors:
+        ## add the relatives
+        authorInfos[authorIDToURL[cid]]["relatives"] += 1
+        
+
 for author in authorInfos:
     authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]
-                  ["name"], "url": author, "comic_count": author_comic_count[authorInfos[author]["id"]]}
+                  ["name"], "url": author, "comic_count": author_comic_count[authorInfos[author]["id"]], "relatives": authorInfos[author]["relatives"], "closest_authors": authorInfos[author]["closest_authors"]}
     authorCollections.insert_one(authorItem)
 
 if not "metadata" in mydb.list_collection_names():

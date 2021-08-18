@@ -28,11 +28,7 @@ module.exports = app => {
         .get(controllers.list_all_characters_with_relatives)
         .post()
     app
-        .route('/comic_authors')
-        .get(controllers.list_all_comic_authors)
-        .post()
-    app
-        .route('/authors_light')
-        .get(controllers.list_all_authors_light)
+        .route('/collaborators')
+        .get(controllers.list_all_collaborators)
         .post()
 };

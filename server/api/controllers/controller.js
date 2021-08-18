@@ -24,19 +24,8 @@ exports.list_all_characters_with_relatives = async (_, res) => {
     });
 };
 
-exports.list_all_comic_authors = async (_, res) => {
-    // list all comics' authors
-    return await comics.find({}, { author_ids: 1, _id: 0 }, (err, allComics) => {
-        if (err) res.send(err);
-        res.json(allComics);
-        console.log("all comic authors sent:", allComics.length);
-        res.end();
-        res.connection.end();
-    });
-};
-
-exports.list_all_authors_light = async (_, res) => {
-    return await authors.find({}, { author_name: 1, _id: 1 }, (err, result) => {
+exports.list_all_collaborators = async (_, res) => {
+    return await authors.find({}, { author_name: 1, _id: 1, relatives: 1, closest_authors: 1 }, (err, result) => {
         if (err) res.send(err);
         res.json(result);
         res.end();
@@ -108,7 +97,7 @@ async function get_one_comic_info(id) {
 
 async function get_one_author_info(id) {
     auid = id;
-    return await authors.findById(auid)
+    return await authors.findById(auid).select({relatives: 0, closest_authors: 0 })
         .then(data => {
             if (!data) {
                 return null;

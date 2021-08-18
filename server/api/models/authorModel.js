@@ -18,7 +18,12 @@ const authorSchema = new Schema(
         comic_count: {
             type: Number,
             default: 0
-        }
+        },
+        relatives: {
+            type: Number,
+            default: 0,
+        },
+        closest_authors: [],
     },
     { collection: 'authors' }
 );
