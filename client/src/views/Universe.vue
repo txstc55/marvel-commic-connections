@@ -19,20 +19,23 @@ export default {
   },
   data() {
     return {
+      hoverID: -1,
       nodes: [],
       links: [],
+      nameToID: {},
+      neighborEdges: {},
       options: {
+        nodeSize: 20,
         force: 1500,
         nodeLabels: true,
         linkWidth: 2,
         forces: {
-          Center: true,
+          Center: false,
           X: 1,
           Y: 1,
           ManyBody: true,
           Link: true,
         },
-        // size:{ w:600, h:600},
       },
     };
   },
@@ -61,11 +64,23 @@ export default {
     },
     createNodes() {
       var maximumSize = -1;
+      // load the network from store
       const network = store.getters.network;
       this.nodes = [];
       this.links = [];
+      // we need to store for each node, what are the edges coming in
+      for (const key of Object.keys(network)) {
+        this.neighborEdges[key] = { position: -1, scale: 1, neighbors: [] };
+      }
+      // this is used to access all the edges
+      var linkid = 0;
       for (const [key, value] of Object.entries(network)) {
+        this.nameToID[value.name] = key;
+        // sizing based on the number of relatives
         var size = Math.log2(value.relatives + 2) * 5;
+        // add the node, and record its position in nodes
+        // because for some reason it's not incremental?
+        this.neighborEdges[key].position = this.nodes.length;
         this.nodes.push({
           id: key,
           name: value.name,
@@ -73,26 +88,85 @@ export default {
           _color: "red",
           _labelClass: "txt40",
         });
+        // fix maximum size as 40
         if (size > maximumSize) {
           maximumSize = size;
         }
         for (const cid of value.closest_characters) {
+          // add the link
           this.links.push({ sid: key, tid: cid });
+          // also record it since we will need it later
+          // each link on canvas has the id of "link-[id]"
+          this.neighborEdges[cid].neighbors.push({ sid: key, linkid: linkid });
+          linkid += 1;
         }
       }
-      // for (var i = 1; i <= maximumSize + 1; i++) {
-      //   this.createCSSSelector(".txt" + i, "font-size:" + i + "px;");
-      // }
       for (var node of this.nodes) {
         node._color = this.gradient(
           "b20a2c",
           "fffbd5",
           node._size / maximumSize
         );
+        // we want to record the original size
+        this.neighborEdges[node.id].scale = node._size / maximumSize;
+        // size up a bit
         node._size = Math.pow(node._size, 1.2);
         if (Math.floor(node._size) <= 40) {
+          // set the text label class
           node._labelClass = "txt" + Math.floor(node._size);
         }
+      }
+      // this guarantees that the svg is rendered
+      this.$nextTick(() => {
+        var circles = document.getElementsByTagName("circle");
+        let me = this;
+        for (const circle of circles) {
+          circle.addEventListener("mouseenter", (event) => {
+            const name = event.target.attributes.title.value;
+            const id = me.nameToID[name];
+            console.log(name, id, me.neighborEdges[id]);
+            me.hoverID = id;
+          });
+          circle.addEventListener("mouseleave", () => {
+            me.hoverID = -1;
+          });
+        }
+      });
+    },
+    highlightNodes(id) {
+      // set the center node to some other color
+      this.nodes[this.neighborEdges[id].position]._color = this.gradient(
+        "373B44",
+        "4286f4",
+        this.neighborEdges[id].scale
+      );
+      // set the neighboring nodes to some other color
+      for (const edge of this.neighborEdges[id].neighbors) {
+        const nid = edge.sid;
+        this.nodes[this.neighborEdges[nid].position]._color = this.gradient(
+          "373B44",
+          "4286f4",
+          this.neighborEdges[nid].scale
+        );
+        // set the link to other color
+        this.links[edge.linkid]._color = "rgba(223, 224, 138, 0.6)";
+      }
+    },
+    dehighlightNodes(id) {
+      this.nodes[this.neighborEdges[id].position]._color = this.gradient(
+        "b20a2c",
+        "fffbd5",
+        this.neighborEdges[id].scale
+      );
+      // set the neighboring nodes to original color
+      for (const edge of this.neighborEdges[id].neighbors) {
+        const nid = edge.sid;
+        this.nodes[this.neighborEdges[nid].position]._color = this.gradient(
+          "b20a2c",
+          "fffbd5",
+          this.neighborEdges[nid].scale
+        );
+        this.links[edge.linkid]._color = "rgba(147, 177, 194, 0.6)";
       }
     },
   },
@@ -101,11 +175,28 @@ export default {
     networkLoaded() {
       return store.getters.networkLoaded;
     },
+    circleCollection() {
+      return document.getElementsByTagName("circle");
+    },
   },
   watch: {
+    hoverID(newid, oldid) {
+      if (oldid != -1) {
+        this.dehighlightNodes(oldid);
+      }
+      if (newid != -1) {
+        this.highlightNodes(newid);
+      }
+    },
     networkLoaded(val) {
       if (val) {
         this.createNodes();
+      }
+    },
+    circleCollection(val) {
+      console.log(val);
+      if (val.length == this.nodes.length) {
+        console.log(val[0]);
       }
     },
   },
@@ -128,11 +219,6 @@ export default {
   max-height: 100%;
 }
 
-.node {
-  -webkit-transition: fill 0.5s ease;
-  transition: fill 0.5s ease;
-  fill: #dcfaf3;
-}
 .node.selected {
   stroke: #caa455;
 }
@@ -140,16 +226,12 @@ export default {
   stroke: rgba(190, 56, 93, 0.6);
 }
 .link {
-  stroke: rgba(147, 177, 194, 0.3);
+  stroke: rgba(147, 177, 194, 0.6);
 }
+
 .link,
 .node {
   stroke-linecap: round;
-}
-
-.node:hover {
-  stroke: #be385d;
-  stroke-width: 5px;
 }
 
 .link-label,
