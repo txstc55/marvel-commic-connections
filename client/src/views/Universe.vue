@@ -100,7 +100,7 @@ export default {
           name: value.name,
           _size: size,
           _color: "red",
-          _labelClass: "txt40",
+          _labelClass: "txt100",
           trueSize: value.relatives + 1,
         });
         // fix maximum size as 40
@@ -124,7 +124,7 @@ export default {
         );
         // we want to record the original size
         this.neighborEdges[node.id].scale = node.trueSize / maximumSize;
-        if (Math.floor(node._size) < 40) {
+        if (Math.floor(node._size) < 100) {
           // set the text label class
           node._labelClass = "txt" + Math.ceil(node._size);
         }
@@ -379,6 +379,156 @@ export default {
 }
 .txt40 {
   font-size: 40px;
+}
+.txt41 {
+  font-size: 41px;
+}
+.txt42 {
+  font-size: 42px;
+}
+.txt43 {
+  font-size: 43px;
+}
+.txt44 {
+  font-size: 44px;
+}
+.txt45 {
+  font-size: 45px;
+}
+.txt46 {
+  font-size: 46px;
+}
+.txt47 {
+  font-size: 47px;
+}
+.txt48 {
+  font-size: 48px;
+}
+.txt49 {
+  font-size: 49px;
+}
+.txt50 {
+  font-size: 50px;
+}
+.txt51 {
+  font-size: 51px;
+}
+.txt52 {
+  font-size: 52px;
+}
+.txt53 {
+  font-size: 53px;
+}
+.txt54 {
+  font-size: 54px;
+}
+.txt55 {
+  font-size: 55px;
+}
+.txt56 {
+  font-size: 56px;
+}
+.txt57 {
+  font-size: 57px;
+}
+.txt58 {
+  font-size: 58px;
+}
+.txt59 {
+  font-size: 59px;
+}
+.txt60 {
+  font-size: 60px;
+}
+.txt71 {
+  font-size: 71px;
+}
+.txt72 {
+  font-size: 72px;
+}
+.txt73 {
+  font-size: 73px;
+}
+.txt74 {
+  font-size: 74px;
+}
+.txt75 {
+  font-size: 75px;
+}
+.txt76 {
+  font-size: 76px;
+}
+.txt77 {
+  font-size: 77px;
+}
+.txt78 {
+  font-size: 78px;
+}
+.txt79 {
+  font-size: 79px;
+}
+.txt80 {
+  font-size: 80px;
+}
+.txt81 {
+  font-size: 81px;
+}
+.txt82 {
+  font-size: 82px;
+}
+.txt83 {
+  font-size: 83px;
+}
+.txt84 {
+  font-size: 84px;
+}
+.txt85 {
+  font-size: 85px;
+}
+.txt86 {
+  font-size: 86px;
+}
+.txt87 {
+  font-size: 87px;
+}
+.txt88 {
+  font-size: 88px;
+}
+.txt89 {
+  font-size: 89px;
+}
+.txt90 {
+  font-size: 90px;
+}
+.txt91 {
+  font-size: 91px;
+}
+.txt92 {
+  font-size: 92px;
+}
+.txt93 {
+  font-size: 93px;
+}
+.txt94 {
+  font-size: 94px;
+}
+.txt95 {
+  font-size: 95px;
+}
+.txt96 {
+  font-size: 96px;
+}
+.txt97 {
+  font-size: 97px;
+}
+.txt98 {
+  font-size: 98px;
+}
+.txt99 {
+  font-size: 99px;
+}
+.txt100 {
+  font-size: 100px;
 }
 </style>
 
