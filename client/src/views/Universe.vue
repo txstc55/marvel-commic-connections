@@ -1,11 +1,25 @@
 <template>
-  <d3-network
-    :net-nodes="nodes"
-    :net-links="links"
-    :options="options"
-    id="universeContainer"
-  >
-  </d3-network>
+  <v-row v-if="!networkLoaded" id="universeContainer">
+    <v-col cols="12" class="mt-12">
+      <div class="text-center">
+        <h2>Loading all character infos is gonna take a while</h2>
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          class="mt-12"
+        ></v-progress-circular>
+      </div>
+    </v-col>
+  </v-row>
+  <v-row v-else id="universeContainer">
+    <d3-network
+      :net-nodes="nodes"
+      :net-links="links"
+      :options="options"
+      id="universeContainer"
+    >
+    </d3-network>
+  </v-row>
 </template>
 /<script>
 import D3Network from "vue-d3-network";
