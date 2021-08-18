@@ -91,7 +91,7 @@ export default {
       for (const [key, value] of Object.entries(network)) {
         this.nameToID[value.name] = key;
         // sizing based on the number of relatives
-        var size = Math.log2(value.relatives + 2) * 5;
+        var size = Math.sqrt(value.relatives + 1) * 10;
         // add the node, and record its position in nodes
         // because for some reason it's not incremental?
         this.neighborEdges[key].position = this.nodes.length;
@@ -101,10 +101,11 @@ export default {
           _size: size,
           _color: "red",
           _labelClass: "txt40",
+          trueSize: value.relatives + 1,
         });
         // fix maximum size as 40
-        if (size > maximumSize) {
-          maximumSize = size;
+        if (value.relatives + 1 > maximumSize) {
+          maximumSize = value.relatives + 1;
         }
         for (const cid of value.closest_characters) {
           // add the link
@@ -119,12 +120,10 @@ export default {
         node._color = this.gradient(
           "b20a2c",
           "fffbd5",
-          node._size / maximumSize
+          node.trueSize / maximumSize
         );
         // we want to record the original size
-        this.neighborEdges[node.id].scale = node._size / maximumSize;
-        // size up a bit
-        node._size = Math.pow(node._size, 1.2);
+        this.neighborEdges[node.id].scale = node.trueSize / maximumSize;
         if (Math.floor(node._size) < 40) {
           // set the text label class
           node._labelClass = "txt" + Math.ceil(node._size);
