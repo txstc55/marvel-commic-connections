@@ -20,6 +20,21 @@ exports.list_all_characters_with_relatives = async (_, res) => {
     });
 };
 
+exports.list_all_comic_authors = async (_, res) => {
+    // list all comics' authors
+    return await comics.find({}, { author_ids: 1 , _id: 0}, (err, allComics) => {
+        if (err) res.send(err);
+        res.json(allComics);
+    });
+};
+
+exports.list_all_authors_light = async (_, res) => {
+    return await authors.find({}, { author_name: 1, _id: 1 }, (err, result) => {
+        if (err) res.send(err);
+        res.json(result);
+    })
+}
+
 exports.get_query_count = async (_, res) => {
     // get how many searches we got
     return await metadata.find({ _id: 0 }, (err, result) => {

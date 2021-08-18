@@ -22,6 +22,11 @@ const routes = [
     path: '/universe',
     name: 'Universe',
     component: () => import(/* webpackChunkName: "about" */ '../views/Universe.vue')
+  },
+  {
+    path: '/creator_universe',
+    name: 'CreatorUniverse',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CreatorUniverse.vue')
   }
 ]
 
