@@ -59,7 +59,7 @@ def getInfoToJson():
 
                 if not comicTitle in comicInfos:
                     comicInfos[comicTitle] = {"id": comicInd, "authorIDs": [], "url": comicURL.replace(
-                        "https://www.marvel.com/comics/", ""), "characterIDs": [], "cover": "", "date": ""}
+                        "https://www.marvel.com/comics/", ""), "characterIDs": [], "cover": "", "date": "November 30, 2999"}
                     comicInd += 1
 
                 comicBookIDs.append(comicInfos[comicTitle]["id"])
