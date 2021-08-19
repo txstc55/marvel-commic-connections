@@ -106,7 +106,7 @@ def getInfoToJson():
                         rawText = item.text.strip()
                         if rawText.endswith("-0001"):
                             rawText = "November 30, 2999"
-                        date = datetime.strptime(rawText, "%B %d, %Y")
+                        date = rawText
                         print(comic, comicURL, date)
             if date == "":
                 print(comic, comicURL)
