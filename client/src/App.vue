@@ -4,7 +4,8 @@
       <router-link to="/">Search</router-link> |
       <router-link to="/universe">Character Universe</router-link> |
       <router-link to="/creator_universe">Creator Universe</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/more">More</router-link>
     </div>
     <router-view />
   </v-app>
