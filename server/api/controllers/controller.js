@@ -97,7 +97,7 @@ async function get_one_comic_info(id) {
 
 async function get_one_author_info(id) {
     auid = id;
-    return await authors.findById(auid).select({relatives: 0, closest_authors: 0 })
+    return await authors.findById(auid).select({ relatives: 0, closest_authors: 0 })
         .then(data => {
             if (!data) {
                 return null;
@@ -132,7 +132,7 @@ exports.show_one_character = async (req, res) => {
                 // get all the comic items
                 comicIDs = data.comic_ids;
                 comicItems = await comicIDs.map(async id => {
-                    return await get_one_comic_info(id).then(data => { return { "name": data.comic_name, "url": data.url, "characters": data.character_ids, "authors": data.author_ids, "id": parseInt(data.id), "cover": data.cover }; });
+                    return await get_one_comic_info(id).then(data => { return { "name": data.comic_name, "url": data.url, "characters": data.character_ids, "authors": data.author_ids, "id": parseInt(data.id), "cover": data.cover, "date": data.date }; });
                 });
                 result["comics"] = await Promise.all(comicItems);
 
