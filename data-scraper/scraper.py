@@ -186,6 +186,14 @@ for character in characterInfos:
     characterInfos[character]["relatives"] = 0
     characterInfos[character]["closest_characters"] = []
 
+authorIDToURL = {}
+for item in authorInfos:
+    authorIDToURL[authorInfos[item]["id"]] = item
+
+comicIDToName = {}
+for item in comicInfos:
+    comicIDToName[comicInfos[item]["id"]] = item
+
 for character in characterInfos:
     # get the list of comics
     comics = list(set(characterInfos[character]["comicIDs"]))
@@ -229,8 +237,11 @@ for character in characterInfos:
 
 for character in characterInfos:
     # we want to see what is the most
+    comicList = list(set(characterInfos[character]["comicIDs"]))
+    comicList.sort(
+        key=lambda x: comicInfos[comicIDToName[x]]["date"], reverse=True)
     characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "relatives": characterInfos[character]["relatives"],
-                     "closest_characters": characterInfos[character]["closest_characters"], "url": characterInfos[character]["url"], "comic_ids": list(set(characterInfos[character]["comicIDs"]))}
+                     "closest_characters": characterInfos[character]["closest_characters"], "url": characterInfos[character]["url"], "comic_ids": comicList}
     characterCollections.insert_one(characterItem)
 
 
@@ -252,10 +263,6 @@ authorCollections = mydb["authors"]
 authorCollections.drop()
 authorCollections = mydb["authors"]
 
-
-authorIDToURL = {}
-for item in authorInfos:
-    authorIDToURL[authorInfos[item]["id"]] = item
 
 author_collaborators = {}
 for item in comicInfos:
