@@ -19,8 +19,13 @@ const comicSchema = new Schema(
         character_ids: [],
         cover: {
             type: String,
+        },
+        date: {
+            type: String,
+            default: "November 30, 2999"
         }
     },
+
     { collection: 'comics' }
 );
 
