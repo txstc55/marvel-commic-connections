@@ -239,7 +239,7 @@ for character in characterInfos:
     # we want to see what is the most
     comicList = list(set(characterInfos[character]["comicIDs"]))
     comicList.sort(
-        key=lambda x: datetime.strptime(comicInfos[comicIDToName[x]]["date"]), reverse=True)
+        key=lambda x: datetime.strptime(comicInfos[comicIDToName[x]]["date"], "%B %d, %Y"), reverse=True)
     characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "relatives": characterInfos[character]["relatives"],
                      "closest_characters": characterInfos[character]["closest_characters"], "url": characterInfos[character]["url"], "comic_ids": comicList}
     characterCollections.insert_one(characterItem)
