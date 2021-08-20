@@ -62,7 +62,8 @@
                       :key="authorID"
                       v-html="authorURL(authorID)"
                     ></span>
-                    <br>
+                  </v-card-subtitle>
+                  <v-card-subtitle>
                     Published On: {{ comics[comicID].date }}
                   </v-card-subtitle>
                   <v-card-actions>
