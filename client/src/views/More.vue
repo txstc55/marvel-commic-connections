@@ -6,7 +6,14 @@
       data-src="visualisation/7054839"
       id="solo-appear"
     >
-    <h2>Who has the most solo comic appearances</h2>
+      <h2>Who has the most solo comic appearances</h2>
+    </div>
+    <div
+      class="flourish-embed flourish-bar-chart-race"
+      data-src="visualisation/7062002"
+      id="co-appear"
+    >
+    <h2>Who has the most co-op comic appearances</h2>
     </div>
   </div>
 </template>
@@ -22,6 +29,7 @@ export default {
       "https://public.flourish.studio/resources/embed.js"
     );
     document.getElementById("solo-appear").appendChild(externalScript);
+    document.getElementById("co-appear").appendChild(externalScript);
   },
 };
 </script>
