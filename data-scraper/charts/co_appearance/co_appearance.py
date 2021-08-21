@@ -9,7 +9,7 @@ with open("../name_pic_map.json", 'r') as outfile:
     name_pic_map = json.load(outfile)
 
 ban_list = ["Fantastic Four", "Defenders",
-            "Invaders", "X-Men", "Exiles", "Avengers", "Thunderbolts", "Alpha Flight", "Power Pack", "New Mutants", "Excalibur", "Generation X", "Guardians of the Galaxy", ]
+            "Invaders", "X-Men", "Exiles", "Avengers", "Thunderbolts", "Alpha Flight", "Power Pack", "New Mutants", "Excalibur", "Generation X", "Guardians of the Galaxy", "Patriot"]
 
 characterInfos = {}
 comicInfos = {}
