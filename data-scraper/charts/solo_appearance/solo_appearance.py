@@ -53,11 +53,11 @@ ban_list = ["Fantastic Four", "Defenders",
 characterInfos = {}
 comicInfos = {}
 min_year = 1975
-with open("../characters.json", 'r') as outfile:
+with open("../../characters.json", 'r') as outfile:
     characterInfos = json.load(outfile)
 
 
-with open("../comics.json", 'r') as outfile:
+with open("../../comics.json", 'r') as outfile:
     comicInfos = json.load(outfile)
 
 
