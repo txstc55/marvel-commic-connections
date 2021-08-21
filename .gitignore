@@ -2,3 +2,4 @@ node_modules/*
 /client/mode_modules
 *.mov
 data-scraper/charts/solo_appearance/solo_appearance.csv
+data-scraper/charts/co_appearance/co_appearance.csv
