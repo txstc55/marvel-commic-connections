@@ -90,6 +90,10 @@ export default new Vuex.Store({
           } else {
             context.commit("SET_API_URL", "http://134.209.65.198:" + port + "/")
           }
+        }).catch(e =>{
+          console.log("USER INFO GET ERROR: ", e);
+          console.log("SET SERVER TO US")
+          context.commit("SET_API_URL", "http://134.209.65.198:" + port + "/")
         })
       }
     },
