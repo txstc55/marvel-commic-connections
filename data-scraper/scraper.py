@@ -153,7 +153,7 @@ def getInfoToJson():
         json.dump(authorInfos, outfile)
 
 
-# getInfoToJson()
+getInfoToJson()
 
 
 characterInfos = {}
