@@ -43,13 +43,6 @@ export default {
         force: 1500,
         nodeLabels: true,
         linkWidth: 2,
-        forces: {
-          Center: false,
-          X: 1,
-          Y: 1,
-          ManyBody: true,
-          Link: true,
-        },
       },
     };
   },
@@ -127,8 +120,8 @@ export default {
         if (Math.ceil(node._size) < 100) {
           // set the text label class
           node._labelClass = "txt" + Math.ceil(node._size);
-          if (node.name == "Hulk"){
-            console.log(node._labelClass)
+          if (node.name == "Hulk") {
+            console.log(node._labelClass);
           }
         }
       }

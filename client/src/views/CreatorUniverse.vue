@@ -43,13 +43,6 @@ export default {
         force: 2500,
         nodeLabels: true,
         linkWidth: 2,
-        forces: {
-          Center: false,
-          X: 1,
-          Y: 1,
-          ManyBody: true,
-          Link: true,
-        },
       },
     };
   },
