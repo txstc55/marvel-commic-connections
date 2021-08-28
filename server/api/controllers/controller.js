@@ -4,6 +4,16 @@ const comics = mongoose.model('comics');
 const authors = mongoose.model('authors');
 const metadata = mongoose.model('metadata')
 
+// For todays date;
+Date.prototype.today = function () {
+    return ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
+}
+
+// For the time now
+Date.prototype.timeNow = function () {
+    return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds();
+}
+
 exports.list_all_characters = async (_, res) => {
     // return all the id and character names
     return await characters.find({}, { _id: 1, character_name: 1 }, (err, allCharacters) => {
@@ -159,7 +169,8 @@ exports.show_one_character = async (req, res) => {
                 result["authors"] = await Promise.all(authorItems);
 
                 res.send(result);
-                console.log(characterID, ": ", result["character"]["name"]);
+                var datetime = "Query at: " + new Date().today() + " @ " + new Date().timeNow();
+                console.log(characterID, ": ", result["character"]["name"], datetime);
                 metadata.findOneAndUpdate({ _id: 0 }, { $inc: { 'query_count': 1 } }, (err, brote) => {    // callback
                     // console.log(err, brote);
                 });
