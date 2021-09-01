@@ -82,7 +82,7 @@ for character in characterInfos:
         if maximum_id != currentid:
             characterInfos[character]["closest_characters"].append(maximum_id)
             characterInfos[name]["relatives"] += 1
-
+print("Finished getting all relatives")
 
 for character in characterInfos:
     # we want to see what is the most
@@ -92,7 +92,7 @@ for character in characterInfos:
     characterItem = {"_id": characterInfos[character]["id"], "character_name": character, "relatives": characterInfos[character]["relatives"],
                      "closest_characters": characterInfos[character]["closest_characters"], "url": characterInfos[character]["url"], "comic_ids": comicList}
     characterCollections.insert_one(characterItem)
-
+print("Finished storing characters")
 
 # record for each author, how many comics he takes part in
 author_comic_count = {}
@@ -107,6 +107,7 @@ for comic in comicInfos:
             author_comic_count[item] = 0
         author_comic_count[item] += 1
     comicCollections.insert_one(comicItem)
+print("Finished storing all comics")
 
 authorCollections = mydb["authors"]
 authorCollections.drop()
@@ -163,7 +164,7 @@ for key in author_collaborators:
     for cid in closest_authors:
         # add the relatives
         authorInfos[authorIDToURL[cid]]["relatives"] += 1
-
+print("Finished getting all author closest collaborators")
 
 for author in authorInfos:
     authorItem = {"_id": authorInfos[author]["id"], "author_name": authorInfos[author]
@@ -173,3 +174,4 @@ for author in authorInfos:
 if not "metadata" in mydb.list_collection_names():
     metadata = mydb["metadata"]
     metadata.insert_one({"_id": 0, "query_count": 1})
+print("Finished storing all authors")
