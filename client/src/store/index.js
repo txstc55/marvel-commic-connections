@@ -86,14 +86,16 @@ export default new Vuex.Store({
       if (this.state.api_url == "") {
         axios.get("https://api.userinfo.io/userinfos").then(response => {
           if (response.data.country.name == "China") {
-            context.commit("SET_API_URL", "http://118.25.3.47:" + port + "/")
+            // temp move to us server and discard chinese server
+            // context.commit("SET_API_URL", "http://118.25.3.47:" + port + "/")
+            context.commit("SET_API_URL", "https://comicconnect.info/api/")
           } else {
-            context.commit("SET_API_URL", "http://134.209.65.198:" + port + "/")
+            context.commit("SET_API_URL", "https://comicconnect.info/api/")
           }
         }).catch(e =>{
           console.log("USER INFO GET ERROR: ", e);
           console.log("SET SERVER TO US")
-          context.commit("SET_API_URL", "http://134.209.65.198:" + port + "/")
+          context.commit("SET_API_URL", "https://comicconnect.info/api/")
         })
       }
     },
