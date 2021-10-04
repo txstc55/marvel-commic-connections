@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-const port = process.env.PORT || 5000; // the port we will be using
+// const port = process.env.PORT || 5000; // the port we will be using
 
 // const this.state.api_url = "https://localhost:" + port + "/"
 
